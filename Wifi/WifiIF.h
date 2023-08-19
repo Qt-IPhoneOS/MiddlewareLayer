@@ -51,7 +51,7 @@ public:
     static WifiIF* instance();
     ~WifiIF();
 
-    enum class Wifi_SpeedMode {
+    enum class WifiSpeedMode {
         OFF = 0,
         WEAKNESS,
         WEAK,
@@ -63,7 +63,7 @@ public:
     bool doDisconnect() override;
 
     signal::Signal<void(std::string)> onIPAddressChanged;
-    signal::Signal<void(Wifi_SpeedMode)> onWifiSpeedModeChanged;
+    signal::Signal<void(WifiSpeedMode)> onWifiSpeedModeChanged;
 
 protected:
     WifiIF();
@@ -74,7 +74,7 @@ protected:
 
     std::shared_mutex mMutex;
     std::string mIPAddress {""};
-    Wifi_SpeedMode mSpeedMode {Wifi_SpeedMode::OFF};
+    WifiSpeedMode mSpeedMode {WifiSpeedMode::OFF};
 };
 
 

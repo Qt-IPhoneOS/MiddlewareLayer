@@ -19,7 +19,7 @@ public:
     void disconnectEvent();
 
     void responseLocalIPAddress(const std::string& address);
-    void responseWifiSpeedMode(const Wifi_SpeedMode& speedMode);
+    void responseWifiSpeedMode(const WifiSpeedMode& speedMode);
 };
 
 WifiIFPrivate::WifiIFPrivate(WifiIF &interface) : mWifiIF(interface), mWifiServiceEvent(WifiServiceEvent::instance()), mWifiServiceProxy(WifiServiceProxy::instance())
@@ -57,14 +57,14 @@ void WifiIFPrivate::responseLocalIPAddress(const std::string& address)
     mWifiIF.onIPAddressChanged(address);
 }
 
-void WifiIFPrivate::responseWifiSpeedMode(const Wifi_SpeedMode& speedMode)
+void WifiIFPrivate::responseWifiSpeedMode(const WifiSpeedMode& speedMode)
 {
     qWarning() << __FUNCTION__ << " speedMode: " << (int)speedMode;
     {
         std::unique_lock<std::shared_mutex> lock(mWifiIF.mMutex);
-        mWifiIF.mSpeedMode = static_cast<WifiIF::Wifi_SpeedMode>(speedMode);
+        mWifiIF.mSpeedMode = static_cast<WifiIF::WifiSpeedMode>(speedMode);
     }
-    mWifiIF.onWifiSpeedModeChanged(static_cast<WifiIF::Wifi_SpeedMode>(speedMode));
+    mWifiIF.onWifiSpeedModeChanged(static_cast<WifiIF::WifiSpeedMode>(speedMode));
 }
 
 
