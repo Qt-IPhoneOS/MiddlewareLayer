@@ -1,5 +1,6 @@
 #include "WifiIF.h"
-#include <Wifi/WifiServiceAdapter.h>
+#include <Wifi/WifiServiceEvent.h>
+#include <Wifi/WifiServiceProxy.h>
 #include <QDebug>
 
 /**
@@ -10,8 +11,9 @@ public:
     WifiIFPrivate(WifiIF& interface);
     ~WifiIFPrivate();
 
-    WifiIF& m_wifiIF;
-    WifiServiceAdapter* mWifiServiceAdapter {nullptr};
+    WifiIF& mWifiIF;
+    WifiServiceEvent* mWifiServiceEvent {nullptr};
+    WifiServiceProxy* mWifiServiceProxy {nullptr};
 
     void connectEvent();
     void disconnectEvent();
@@ -20,10 +22,10 @@ public:
     void responseWifiSpeedMode(const Wifi_SpeedMode& speedMode);
 };
 
-WifiIFPrivate::WifiIFPrivate(WifiIF &interface) : m_wifiIF(interface), mWifiServiceAdapter(WifiServiceAdapter::instance())
+WifiIFPrivate::WifiIFPrivate(WifiIF &interface) : mWifiIF(interface), mWifiServiceEvent(WifiServiceEvent::instance()), mWifiServiceProxy(WifiServiceProxy::instance())
 {
-    mWifiServiceAdapter->connectEvent.reqCallbackFunc(std::bind(&WifiIFPrivate::connectEvent, this));
-    mWifiServiceAdapter->disconnectEvent.reqCallbackFunc(std::bind(&WifiIFPrivate::disconnectEvent, this));
+    mWifiServiceEvent->connectEvent.reqCallbackFunc(std::bind(&WifiIFPrivate::connectEvent, this));
+    mWifiServiceEvent->disconnectEvent.reqCallbackFunc(std::bind(&WifiIFPrivate::disconnectEvent, this));
 }
 
 WifiIFPrivate::~WifiIFPrivate()
@@ -33,36 +35,36 @@ WifiIFPrivate::~WifiIFPrivate()
 
 void WifiIFPrivate::connectEvent()
 {
-    mWifiServiceAdapter->onGetLocalIPAddress.reqCallbackFunc(std::bind(&WifiIFPrivate::responseLocalIPAddress, this, std::placeholders::_1));
-    mWifiServiceAdapter->onGetWifiSpeedMode.reqCallbackFunc(std::bind(&WifiIFPrivate::responseWifiSpeedMode, this, std::placeholders::_1));
+    mWifiServiceEvent->onGetLocalIPAddress.reqCallbackFunc(std::bind(&WifiIFPrivate::responseLocalIPAddress, this, std::placeholders::_1));
+    mWifiServiceEvent->onGetWifiSpeedMode.reqCallbackFunc(std::bind(&WifiIFPrivate::responseWifiSpeedMode, this, std::placeholders::_1));
 }
 
 void WifiIFPrivate::disconnectEvent()
 {
-    mWifiServiceAdapter->connectEvent.unReqCallbackFunc();
-    mWifiServiceAdapter->disconnectEvent.unReqCallbackFunc();
-    mWifiServiceAdapter->onGetLocalIPAddress.unReqCallbackFunc();
-    mWifiServiceAdapter->onGetWifiSpeedMode.unReqCallbackFunc();
+    mWifiServiceEvent->connectEvent.unReqCallbackFunc();
+    mWifiServiceEvent->disconnectEvent.unReqCallbackFunc();
+    mWifiServiceEvent->onGetLocalIPAddress.unReqCallbackFunc();
+    mWifiServiceEvent->onGetWifiSpeedMode.unReqCallbackFunc();
 }
 
 void WifiIFPrivate::responseLocalIPAddress(const std::string& address)
 {
     qWarning() << __FUNCTION__ << " address: " << address;
     {
-        std::unique_lock<std::shared_mutex> lock(m_wifiIF.m_mutex);
-        m_wifiIF.m_IPAddress = address;
+        std::unique_lock<std::shared_mutex> lock(mWifiIF.mMutex);
+        mWifiIF.mIPAddress = address;
     }
-    m_wifiIF.onIPAddressChanged(address);
+    mWifiIF.onIPAddressChanged(address);
 }
 
 void WifiIFPrivate::responseWifiSpeedMode(const Wifi_SpeedMode& speedMode)
 {
     qWarning() << __FUNCTION__ << " speedMode: " << (int)speedMode;
     {
-        std::unique_lock<std::shared_mutex> lock(m_wifiIF.m_mutex);
-        m_wifiIF.m_speedMode = static_cast<WifiIF::Wifi_SpeedMode>(speedMode);
+        std::unique_lock<std::shared_mutex> lock(mWifiIF.mMutex);
+        mWifiIF.mSpeedMode = static_cast<WifiIF::Wifi_SpeedMode>(speedMode);
     }
-    m_wifiIF.onWifiSpeedModeChanged(static_cast<WifiIF::Wifi_SpeedMode>(speedMode));
+    mWifiIF.onWifiSpeedModeChanged(static_cast<WifiIF::Wifi_SpeedMode>(speedMode));
 }
 
 
@@ -71,16 +73,16 @@ void WifiIFPrivate::responseWifiSpeedMode(const Wifi_SpeedMode& speedMode)
 */
 WifiIF::WifiIF()
 {
-    m_privWifi = new WifiIFPrivate(*this);
-    m_wifiServiceProxy = WifiServiceProxy::instance();
+    mWifiPriv = new WifiIFPrivate(*this);
+    mWifiPriv->mWifiServiceProxy = WifiServiceProxy::instance();
 
-    if (m_wifiServiceProxy == nullptr)
+    if (mWifiPriv->mWifiServiceProxy == nullptr)
         throw std::runtime_error("Create WifiService backend is failed");
 }
 
 WifiIF::~WifiIF()
 {
-    delete m_privWifi;
+    delete mWifiPriv;
 }
 
 WifiIF *WifiIF::instance()
@@ -91,12 +93,12 @@ WifiIF *WifiIF::instance()
 
 bool WifiIF::doConnect()
 {
-    m_wifiServiceProxy->connectService();
+    mWifiPriv->mWifiServiceProxy->connectService();
     return true;
 }
 
 bool WifiIF::doDisconnect()
 {
-    m_wifiServiceProxy->disconnectService();
+    mWifiPriv->mWifiServiceProxy->disconnectService();
     return true;
 }

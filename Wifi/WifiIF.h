@@ -1,7 +1,6 @@
 #ifndef WIFIIF_H
 #define WIFIIF_H
 
-#include <Wifi/WifiServiceProxy.h>
 #include <Common/AbstractInterface.h>
 #include <shared_mutex>
 #include "Signal.h"
@@ -71,12 +70,11 @@ protected:
     WifiIF(const WifiIF& ) = delete;
     WifiIF& operator=(const WifiIF& ) = delete;
 
-    WifiIFPrivate* m_privWifi {nullptr};
-    WifiServiceProxy* m_wifiServiceProxy {nullptr};
+    WifiIFPrivate* mWifiPriv {nullptr};
 
-    std::shared_mutex m_mutex;
-    std::string m_IPAddress {""};
-    Wifi_SpeedMode m_speedMode {Wifi_SpeedMode::OFF};
+    std::shared_mutex mMutex;
+    std::string mIPAddress {""};
+    Wifi_SpeedMode mSpeedMode {Wifi_SpeedMode::OFF};
 };
 
 
