@@ -62,7 +62,6 @@ public:
     bool doConnect() override;
     bool doDisconnect() override;
 
-    signal::Signal<void(std::string)> onIPAddressChanged;
     signal::Signal<void(WifiSpeedMode)> onWifiSpeedModeChanged;
 
 protected:

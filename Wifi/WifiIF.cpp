@@ -18,7 +18,6 @@ public:
     void connectEvent();
     void disconnectEvent();
 
-    void responseLocalIPAddress(const std::string& address);
     void responseWifiSpeedMode(const WifiSpeedMode& speedMode);
 };
 
@@ -35,7 +34,6 @@ WifiIFPrivate::~WifiIFPrivate()
 
 void WifiIFPrivate::connectEvent()
 {
-    mWifiServiceEvent->onGetLocalIPAddress.reqCallbackFunc(std::bind(&WifiIFPrivate::responseLocalIPAddress, this, std::placeholders::_1));
     mWifiServiceEvent->onGetWifiSpeedMode.reqCallbackFunc(std::bind(&WifiIFPrivate::responseWifiSpeedMode, this, std::placeholders::_1));
 }
 
@@ -43,18 +41,7 @@ void WifiIFPrivate::disconnectEvent()
 {
     mWifiServiceEvent->connectEvent.unReqCallbackFunc();
     mWifiServiceEvent->disconnectEvent.unReqCallbackFunc();
-    mWifiServiceEvent->onGetLocalIPAddress.unReqCallbackFunc();
     mWifiServiceEvent->onGetWifiSpeedMode.unReqCallbackFunc();
-}
-
-void WifiIFPrivate::responseLocalIPAddress(const std::string& address)
-{
-    qWarning() << __FUNCTION__ << " address: " << address;
-    {
-        std::unique_lock<std::shared_mutex> lock(mWifiIF.mMutex);
-        mWifiIF.mIPAddress = address;
-    }
-    mWifiIF.onIPAddressChanged(address);
 }
 
 void WifiIFPrivate::responseWifiSpeedMode(const WifiSpeedMode& speedMode)
