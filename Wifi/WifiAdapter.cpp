@@ -1,5 +1,5 @@
-#include "WifiIF.h"
+#include "WifiInterface.h"
 
-WifiAdapter::WifiAdapter(WifiIF &interface):mWifiIF(interface), mMutex(mWifiIF.m_mutex)
+WifiAdapter::WifiAdapter(WifiInterface &interface):mWifiIF(interface), mMutex(mWifiIF.m_mutex)
 {
 }
