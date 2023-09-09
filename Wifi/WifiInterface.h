@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include "Signal.h"
 
+
 struct WifiDevice {
     enum class State {
         UnknownState,
@@ -26,27 +27,55 @@ struct WifiDevice {
         Unpaired
     };
 
-    State getState() const
-    {
-        return mState;
-    }
-
-    enum class WifiSpeedMode {
-        Off = 0,
-        Weakness,
+    enum class SpeedMode {
         Weak,
         Medium,
         Strong
     };
 
-    State mState;
-    DeviceType mDeviceType;
-    std::string mAddress;
-    std::string mName;
+    enum class IP {
+        Automatic,
+        Manual,
+        BootP
+    };
 
-    WifiDevice(const std::string& addr, const std::string& name)
-        : mState(State::UnknownState), mDeviceType(DeviceType::Unknown), mAddress(addr), mName(name)
-    {
+    enum class DNS {
+        Automatic,
+        Manual
+    };
+
+    enum class Proxy {
+        Off,
+        Manual,
+        Automatic
+    };
+
+    std::string mName, mPassword, mAddress, mIPAddress, mSubnet, mRouter;
+    bool mPrivateAddr, mLowDataMode, mLimitIP;
+    SpeedMode mSpeedMode;
+    IP mIP;
+    DeviceType mDeviceType;
+    DNS mDNS;
+    Proxy mProxy;
+    State mState;
+
+    WifiDevice(std::string name, std::string addr, DeviceType type = DeviceType::Unknown, SpeedMode speedMode = SpeedMode::Strong, bool privateAddr = true, IP ip = IP::Automatic,
+               DNS dns = DNS::Automatic, Proxy proxy = Proxy::Automatic, std::string password = "", bool lowDataMode = true, bool limitIP = false,
+               std::string ipAddr = "", std::string subnetMask = "", std::string router = "") {
+        mName = name;
+        mAddress = addr;
+        mSpeedMode = speedMode;
+        mDeviceType = type;
+        mPrivateAddr = privateAddr;
+        mIP = ip;
+        mDNS = dns;
+        mProxy = proxy;
+        mPassword = password;
+        mLowDataMode = lowDataMode;
+        mLimitIP = limitIP;
+        mIPAddress = ipAddr;
+        mSubnet = subnetMask;
+        mRouter = router;
     }
 };
 
@@ -126,9 +155,9 @@ public:
     std::vector<WifiDevice*> getPairedDevice() const;
     WifiDevice* getConnectedDevice() const;
 
-    signal::Signal<void(const WifiDevice::WifiSpeedMode&)> onWifiSpeedModeChanged;
+    signal::Signal<void(const WifiDevice::SpeedMode&)> onWifiSpeedModeChanged;
     signal::Signal<void(const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
-    signal::Signal<void(WifiDevice*)> onPairedDeviceChanged;
+    signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceChanged;
     signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
 
 protected:

@@ -24,8 +24,8 @@ public:
     virtual void doDisconnectedEvent();
 
 protected:
-    AbstractState m_state;
-    std::shared_mutex m_mutex;
+    AbstractState mState;
+    std::shared_mutex mMutex;
 };
 
 #endif // ABSTRACTINTERFACE_H

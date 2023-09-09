@@ -1,7 +1,7 @@
 #include "AbstractInterface.h"
 #include <QDebug>
 
-AbstractInterface::AbstractInterface() : m_state(AbstractState::State_Disconnected)
+AbstractInterface::AbstractInterface() : mState(AbstractState::State_Disconnected)
 {
 }
 
@@ -11,24 +11,24 @@ AbstractInterface::~AbstractInterface()
 
 bool AbstractInterface::connect()
 {
-    std::unique_lock<std::shared_mutex> lock(m_mutex);
-    if (m_state != AbstractState::State_Disconnected)
+    std::unique_lock<std::shared_mutex> lock(mMutex);
+    if (mState != AbstractState::State_Disconnected)
     {
         return false;
     }
-    m_state = AbstractState::State_WaitConnected;
+    mState = AbstractState::State_WaitConnected;
     doConnect();
     return true;
 }
 
 bool AbstractInterface::disconnect()
 {
-    std::unique_lock<std::shared_mutex> lock(m_mutex);
-    if (m_state == AbstractState::State_Disconnected)
+    std::unique_lock<std::shared_mutex> lock(mMutex);
+    if (mState == AbstractState::State_Disconnected)
     {
         return false;
     }
-    m_state = AbstractState::State_Disconnected;
+    mState = AbstractState::State_Disconnected;
     doDisconnect();
     return true;
 }
@@ -45,20 +45,20 @@ bool AbstractInterface::doDisconnect()
 
 void AbstractInterface::doConnectedEvent()
 {
-    if (m_state != AbstractState::State_WaitConnected)
+    if (mState != AbstractState::State_WaitConnected)
         return;
 
-    m_state = AbstractState::State_Ready;
+    mState = AbstractState::State_Ready;
 }
 
 void AbstractInterface::doDisconnectedEvent()
 {
-    if (m_state != AbstractState::State_WaitConnected) {
-        m_state = AbstractState::State_WaitConnected;
+    if (mState != AbstractState::State_WaitConnected) {
+        mState = AbstractState::State_WaitConnected;
         return;
     }
 
-    if (m_state == AbstractState::State_WaitConnected)
+    if (mState == AbstractState::State_WaitConnected)
     {
         doDisconnect();
     }

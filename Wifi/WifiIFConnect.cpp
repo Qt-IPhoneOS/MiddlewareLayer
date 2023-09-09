@@ -70,7 +70,7 @@ void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDevice
                     it->second->mDeviceType = WifiDevice::DeviceType::Paired;
                     changeFlg = true;
                 }
-                WifiDevice* device = new WifiDevice(devInfo.mWifiAddress, devInfo.mName);
+                WifiDevice* device = new WifiDevice(devInfo.mName, devInfo.mWifiAddress);
                 device->mDeviceType = WifiDevice::DeviceType::Paired;
                 changeFlg = true;
 
@@ -80,13 +80,16 @@ void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDevice
 
         if (changeFlg)
         {
+            std::vector<WifiDevice*> temp;
             for (std::unordered_map<std::string, WifiDevice*>::iterator it = mWifiIF.mAdapter->mDeviceTable.begin(); it != mWifiIF.mAdapter->mDeviceTable.end(); ++it)
             {
                 if (it->second->mDeviceType == WifiDevice::DeviceType::Paired)
                 {
-                    mWifiIF.mAdapter->onPairedDeviceChanged(it->second);
+                    temp.push_back(it->second);
                 }
             }
+            if (temp.size())
+                mWifiIF.mAdapter->onPairedDeviceChanged(temp);
         }
     }
 }
@@ -105,7 +108,7 @@ void WifiIFConnect::notifyUpdateConnectedDevice(const WifiDeviceInfo& connectedD
         }
     }
 
-    WifiDevice* device = new WifiDevice(connectedDevice.mWifiAddress, connectedDevice.mName);
+    WifiDevice* device = new WifiDevice(connectedDevice.mName, connectedDevice.mWifiAddress);
     device->mDeviceType = WifiDevice::DeviceType::Connected;
     mWifiIF.mAdapter->onConnectedDeviceChanged(device);
     mWifiIF.mAdapter->mDeviceTable.emplace(connectedDevice.mWifiAddress, device);
@@ -113,5 +116,5 @@ void WifiIFConnect::notifyUpdateConnectedDevice(const WifiDeviceInfo& connectedD
 
 void WifiIFConnect::notifyWifiSpeedMode(const WifiSpeedMode& speedMode)
 {
-    mWifiIF.mAdapter->onWifiSpeedModeChanged(static_cast<WifiDevice::WifiSpeedMode>(speedMode));
+    mWifiIF.mAdapter->onWifiSpeedModeChanged(static_cast<WifiDevice::SpeedMode>(speedMode));
 }
