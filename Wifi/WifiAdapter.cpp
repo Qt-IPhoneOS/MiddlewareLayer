@@ -23,10 +23,10 @@ WifiDevice* WifiAdapter::getConnectedDevice() const
 {
     for (std::unordered_map<std::string, WifiDevice*>::iterator it = mWifiIF.mAdapter->mDeviceTable.begin(); it != mWifiIF.mAdapter->mDeviceTable.end(); ++it)
     {
-        if (it->second->mDeviceType == WifiDevice::DeviceType::Connected)
-        {
-            return it->second;
-        }
+//        if (it->second->getDeviceType() == WifiDevice::DeviceType::Connected)
+//        {
+//            return it->second;
+//        }
     }
 }
 
