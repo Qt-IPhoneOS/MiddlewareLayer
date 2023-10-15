@@ -4,7 +4,7 @@ QT -= gui
 TEMPLATE = lib
 CONFIG += c++20 dl
 
-TARGET = interfacelayer
+TARGET = middlewarelayer
 DESTDIR = $$PWD/../Executable
 LIBS += -L$$PWD/../Executable -luicommon -lservice
 
