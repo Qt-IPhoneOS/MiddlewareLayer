@@ -70,7 +70,22 @@ public:
     ~WifiDevice();
 
     void setData(const DeviceProperty&, const CommonType&);
-    CommonType getData(const DeviceProperty&);
+
+    inline std::string getName() const { return mName; }
+    inline std::string getPassword() const { return mPassword; }
+    inline std::string getAddress() const { return mAddress; }
+    inline std::string getIPAddress() const { return mIPAddress; }
+    inline std::string getSubnet() const { return mSubnet; }
+    inline std::string getRouter() const { return mRouter; }
+    inline bool getPrivateAddress() const { return mPrivateAddr; }
+    inline bool getLowDataMode() const { return mLowDataMode; }
+    inline bool getLimitIP() const { return mLimitIP; }
+    inline SpeedMode getSpeedMode() const { return mSpeedMode; }
+    inline IP getIP() const { return mIP; }
+    inline DeviceType getDeviceType() const { return mDeviceType; }
+    inline DNS getDNS() const { return mDNS; }
+    inline Proxy getProxy() const { return mProxy; }
+    inline State getState() const { return mState; }
 
 private:
     std::string mName, mPassword, mAddress, mIPAddress, mSubnet, mRouter;

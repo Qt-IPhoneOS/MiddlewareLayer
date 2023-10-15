@@ -51,7 +51,6 @@ void WifiIFConnect::disconnectEvent()
 
 void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDeviceInfo>& pairedDevices)
 {
-    qWarning() << "notifyUpdatePairedDevices size: " << pairedDevices.size();
     {
         bool changeFlg = false;
         for (size_t i = 0; i < pairedDevices.size(); i++)
@@ -59,23 +58,23 @@ void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDevice
             {
                 std::unique_lock<std::shared_mutex> lock(mWifiIF.mMutex);
                 const WifiPairedDeviceInfo& devInfo = pairedDevices[i];
-                qWarning() << devInfo.mWifiAddress;
 
                 std::unordered_map<std::string, WifiDevice*>::iterator it = mWifiIF.mAdapter->mDeviceTable.find(devInfo.mWifiAddress);
                 if (it != mWifiIF.mAdapter->mDeviceTable.end())
                 {
-                    //if (it->second->getDeviceType() == WifiDevice::DeviceType::Paired)
-                    //    continue;
+                    if (it->second->getDeviceType() == WifiDevice::DeviceType::Paired)
+                        continue;
 
-                    //it->second->getDeviceType() = WifiDevice::DeviceType::Paired;
+                    it->second->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Paired);
                     changeFlg = true;
                 }
-                WifiDevice* device = new WifiDevice(devInfo.mName, devInfo.mWifiAddress);
-                device->setData(WifiDevice::DeviceProperty::Name, devInfo.mName);
-                //device->getDeviceType() = WifiDevice::DeviceType::Paired;
-                changeFlg = true;
-
-                mWifiIF.mAdapter->mDeviceTable.emplace(devInfo.mWifiAddress, device);
+                else
+                {
+                    WifiDevice* device = new WifiDevice(devInfo.mName, devInfo.mWifiAddress);
+                    device->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Paired);
+                    changeFlg = true;
+                    mWifiIF.mAdapter->mDeviceTable.emplace(devInfo.mWifiAddress, device);
+                }
             }
         }
 
@@ -84,10 +83,10 @@ void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDevice
             std::vector<WifiDevice*> temp;
             for (std::unordered_map<std::string, WifiDevice*>::iterator it = mWifiIF.mAdapter->mDeviceTable.begin(); it != mWifiIF.mAdapter->mDeviceTable.end(); ++it)
             {
-                //if (it->second->getDeviceType() == WifiDevice::DeviceType::Paired)
-                //{
-                //    temp.push_back(it->second);
-                //}
+                if (it->second->getDeviceType() == WifiDevice::DeviceType::Paired)
+                {
+                    temp.push_back(it->second);
+                }
             }
             if (temp.size())
                 mWifiIF.mAdapter->onPairedDeviceChanged(temp);
@@ -97,22 +96,22 @@ void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDevice
 
 void WifiIFConnect::notifyUpdateConnectedDevice(const WifiDeviceInfo& connectedDevice)
 {
-    qWarning() << __FUNCTION__ << " connectedDevice: " << connectedDevice.mWifiAddress;
     std::unordered_map<std::string, WifiDevice*>::iterator it = mWifiIF.mAdapter->mDeviceTable.find(connectedDevice.mWifiAddress);
     if (it != mWifiIF.mAdapter->mDeviceTable.end())
     {
-//        if (it->second->getDeviceType() != WifiDevice::DeviceType::Connected)
-//        {
-//            //it->second->getDeviceType() = WifiDevice::DeviceType::Connected;
-//            mWifiIF.mAdapter->onConnectedDeviceChanged(it->second);
-//            return;
-//        }
+        if (it->second->getDeviceType() != WifiDevice::DeviceType::Connected)
+        {
+            it->second->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
+            mWifiIF.mAdapter->onConnectedDeviceChanged(it->second);
+            return;
+        }
     }
 
     WifiDevice* device = new WifiDevice(connectedDevice.mName, connectedDevice.mWifiAddress);
-    //device->getDeviceType() = WifiDevice::DeviceType::Connected;
-    mWifiIF.mAdapter->onConnectedDeviceChanged(device);
+    device->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
     mWifiIF.mAdapter->mDeviceTable.emplace(connectedDevice.mWifiAddress, device);
+
+    mWifiIF.mAdapter->onConnectedDeviceChanged(device);
 }
 
 void WifiIFConnect::notifyWifiSpeedMode(const WifiSpeedMode& speedMode)

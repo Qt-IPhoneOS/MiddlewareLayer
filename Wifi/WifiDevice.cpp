@@ -10,63 +10,55 @@ WifiDevice::~WifiDevice()
 {
 }
 
-//inline std::string getName() const { return mName; }
-//inline std::string getPassword() const { return mPassword; }
-//inline std::string getAddress() const { return mAddress; }
-//inline std::string getIPAddress() const { return mIPAddress; }
-//inline std::string getSubnet() const { return mSubnet; }
-//inline std::string getRouter() const { return mRouter; }
-//inline bool getPrivateAddress() const { return mPrivateAddr; }
-//inline bool getLowDataMode() const { return mLowDataMode; }
-//inline bool getLimitIP() const { return mLimitIP; }
-//inline SpeedMode getSpeedMode() const { return mSpeedMode; }
-//inline IP getIP() const { return mIP; }
-//inline DeviceType getDeviceType() const { return mDeviceType; }
-//inline DNS getDNS() const { return mDNS; }
-//inline Proxy getProxy() const { return mProxy; }
-//inline State getState() const { return mState; }
-
 void WifiDevice::setData(const DeviceProperty& property, const CommonType& value)
 {
-    qWarning() << "AAAA: " << value.value<std::string>();
     switch(property) {
     case DeviceProperty::Name:
         mName = value.value<std::string>();
         return;
     case DeviceProperty::Password:
-        break;
+        mPassword = value.value<std::string>();
+        return;
     case DeviceProperty::Address:
-        break;
+        mAddress = value.value<std::string>();
+        return;
     case DeviceProperty::IPAddress:
-        break;
+        mIPAddress = value.value<std::string>();
+        return;
     case DeviceProperty::Subnet:
-        break;
+        mSubnet = value.value<std::string>();
+        return;
     case DeviceProperty::Router:
-        break;
+        mRouter = value.value<std::string>();
+        return;
     case DeviceProperty::PrivateAddress:
-        break;
+        mPrivateAddr = value.value<bool>();
+        return;
     case DeviceProperty::LowDataMode:
-        break;
+        mLowDataMode = value.value<bool>();
+        return;
     case DeviceProperty::LimitIP:
-        break;
+        mLimitIP = value.value<bool>();
+        return;
     case DeviceProperty::SpeedMode:
-        break;
+        mSpeedMode = value.value<SpeedMode>();
+        return;
     case DeviceProperty::IP:
-        break;
+        mIP = value.value<IP>();
+        return;
     case DeviceProperty::DeviceType:
-        break;
+        mDeviceType = value.value<DeviceType>();
+        return;
     case DeviceProperty::DNS:
-        break;
+        mDNS = value.value<DNS>();
+        return;
     case DeviceProperty::Proxy:
-        break;
+        mProxy = value.value<Proxy>();
+        return;
     case DeviceProperty::State:
-        break;
+        mState = value.value<State>();
+        return;
     default:
-        break;
+        return;
     }
-}
-
-CommonType WifiDevice::getData(const DeviceProperty&)
-{
-
 }
