@@ -4,7 +4,8 @@
 #include <Common/AbstractInterface.h>
 #include <shared_mutex>
 #include <unordered_map>
-#include "Signal.h"
+#include <FeatureClass/Signal.h>
+#include <FeatureClass/CommonType.h>
 #include "WifiDevice.h"
 
 class WifiIFConnect;

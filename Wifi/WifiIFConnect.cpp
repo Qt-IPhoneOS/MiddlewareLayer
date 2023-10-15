@@ -71,6 +71,7 @@ void WifiIFConnect::notifyUpdatePairedDevices(const std::vector<WifiPairedDevice
                     changeFlg = true;
                 }
                 WifiDevice* device = new WifiDevice(devInfo.mName, devInfo.mWifiAddress);
+                device->setData(WifiDevice::DeviceProperty::Name, devInfo.mName);
                 //device->getDeviceType() = WifiDevice::DeviceType::Paired;
                 changeFlg = true;
 

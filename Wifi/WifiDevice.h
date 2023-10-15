@@ -2,9 +2,28 @@
 #define WIFIDEVICE_H
 
 #include <string>
+#include <FeatureClass/CommonType.h>
 
 class WifiDevice {
 public:
+    enum class DeviceProperty {
+        Name,
+        Password,
+        Address,
+        IPAddress,
+        Subnet,
+        Router,
+        PrivateAddress,
+        LowDataMode,
+        LimitIP,
+        SpeedMode,
+        IP,
+        DeviceType,
+        DNS,
+        Proxy,
+        State
+    };
+
     enum class State {
         UnknownState,
         UnpairedState,
@@ -47,26 +66,11 @@ public:
         Automatic
     };
 
-    WifiDevice(std::string name, std::string addr, DeviceType type = DeviceType::Unknown, SpeedMode speedMode = SpeedMode::Strong, bool privateAddr = true, IP ip = IP::Automatic,
-               DNS dns = DNS::Automatic, Proxy proxy = Proxy::Automatic, std::string password = "", bool lowDataMode = true, bool limitIP = false,
-               std::string ipAddr = "", std::string subnetMask = "", std::string router = "");
+    WifiDevice(std::string name, std::string addr);
     ~WifiDevice();
 
-    inline std::string getName() const { return mName; }
-    inline std::string getPassword() const { return mPassword; }
-    inline std::string getAddress() const { return mAddress; }
-    inline std::string getIPAddress() const { return mIPAddress; }
-    inline std::string getSubnet() const { return mSubnet; }
-    inline std::string getRouter() const { return mRouter; }
-    inline bool getPrivateAddress() const { return mPrivateAddr; }
-    inline bool getLowDataMode() const { return mLowDataMode; }
-    inline bool getLimitIP() const { return mLimitIP; }
-    inline SpeedMode getSpeedMode() const { return mSpeedMode; }
-    inline IP getIP() const { return mIP; }
-    inline DeviceType getDeviceType() const { return mDeviceType; }
-    inline DNS getDNS() const { return mDNS; }
-    inline Proxy getProxy() const { return mProxy; }
-    inline State getState() const { return mState; }
+    void setData(const DeviceProperty&, const CommonType&);
+    CommonType getData(const DeviceProperty&);
 
 private:
     std::string mName, mPassword, mAddress, mIPAddress, mSubnet, mRouter;
