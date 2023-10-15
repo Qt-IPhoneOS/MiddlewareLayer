@@ -10,9 +10,9 @@ LIBS += -L$$PWD/../Executable -luicommon -lservice
 
 INCLUDEPATH += $$PWD/../UICommon \
                $$PWD/../UICommon/FeatureClass \
-               $$PWD/../ServiceWrapper/include \
-               $$PWD/../ServiceWrapper/include/Common \
-               $$PWD/../ServiceWrapper/include/Wifi \
+               $$PWD/../Services/include \
+               $$PWD/../Services/include/Common \
+               $$PWD/../Services/include/Wifi \
 
 SOURCES += \
     Common/AbstractInterface.cpp \
