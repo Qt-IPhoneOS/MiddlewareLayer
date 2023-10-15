@@ -8,8 +8,8 @@ TARGET = middlewarelayer
 DESTDIR = $$PWD/../Executable
 LIBS += -L$$PWD/../Executable -luicommon -lservice
 
-INCLUDEPATH += $$PWD/../UICommon \
-               $$PWD/../UICommon/FeatureClass \
+INCLUDEPATH += $$PWD/../Apps/UICommon \
+               $$PWD/../Apps/UICommon/FeatureClass \
                $$PWD/../Services/include \
                $$PWD/../Services/include/Common \
                $$PWD/../Services/include/Wifi \
