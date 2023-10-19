@@ -17,13 +17,12 @@ INCLUDEPATH += $$PWD/../Apps/UICommon \
 SOURCES += \
     Common/AbstractInterface.cpp \
     Wifi/WifiAdapter.cpp \
+    Wifi/WifiAdapterConnect.cpp \
     Wifi/WifiDevice.cpp \
-    Wifi/WifiIFConnect.cpp \
-    Wifi/WifiInterface.cpp
 
 HEADERS += \
     Common/AbstractInterface.h \
-    Wifi/WifiDevice.h \
-    Wifi/WifiInterface.h
+    Wifi/WifiAdapter.h \
+    Wifi/WifiDevice.h
 
 DISTFILES +=
