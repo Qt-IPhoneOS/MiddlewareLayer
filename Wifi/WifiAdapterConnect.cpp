@@ -111,8 +111,6 @@ void WifiAdapterConnect::updateConnectedDevice(const WifiDeviceInfo& connectedDe
     WifiDevice* device = new WifiDevice(connectedDevice.mName, connectedDevice.mWifiAddress);
     device->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
     mAdapter.mDeviceTable.emplace(connectedDevice.mWifiAddress, device);
-
-    mAdapter.onConnectedDeviceChanged(device);
 }
 
 void WifiAdapterConnect::updateWifiEnable(const bool &enable)

@@ -9,7 +9,7 @@ DESTDIR = $$PWD/../Executable
 LIBS += -L$$PWD/../Executable -luicommon -lservice
 
 INCLUDEPATH += $$PWD/../Apps/UICommon \
-               $$PWD/../Apps/UICommon/FeatureClass \
+               $$PWD/../Apps/UICommon/Feature \
                $$PWD/../Services/include \
                $$PWD/../Services/include/Common \
                $$PWD/../Services/include/Wifi \

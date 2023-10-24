@@ -2,7 +2,7 @@
 #define WIFIDEVICE_H
 
 #include <string>
-#include <FeatureClass/CommonType.h>
+#include <Feature/CommonType.h>
 
 class WifiDevice {
 public:
