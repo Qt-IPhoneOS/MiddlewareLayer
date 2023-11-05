@@ -31,6 +31,7 @@ public:
 
     // API Request
     void setEnableWifi(const bool&);
+    void connectDevice(const std::string& address);
 
     bool getEnableWifi();
 
