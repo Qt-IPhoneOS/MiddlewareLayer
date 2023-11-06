@@ -15,12 +15,6 @@ void WifiDevice::setData(const DeviceProperty& property, const CommonType& value
     case DeviceProperty::Password:
         mPassword = value.value<std::string>();
         return;
-    case DeviceProperty::LowDataMode:
-        mLowDataMode = value.value<bool>();
-        return;
-    case DeviceProperty::LimitIP:
-        mLimitIP = value.value<bool>();
-        return;
     case DeviceProperty::SpeedMode:
         mSpeedMode = value.value<SpeedMode>();
         return;

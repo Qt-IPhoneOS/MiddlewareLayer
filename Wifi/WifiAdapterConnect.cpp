@@ -18,7 +18,7 @@ public:
 
     void updateWifiEnable(const bool&);
     void updatePairedDevices(const std::vector<WifiPairedDeviceInfo>& );
-    void updateConnectedDevice(const WifiDeviceInfo& );
+    void updateConnectedDevice(const WifiConnectedDeviceInfo& );
 };
 
 WifiAdapterConnect::WifiAdapterConnect(WifiAdapter &instance) : mAdapter(instance), mEvent(WifiServiceEvent::instance()), mProxy(WifiServiceProxy::instance())
@@ -71,9 +71,7 @@ void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceI
                 }
                 else
                 {
-                    //PairedDeviceInfo(std::string name, std::string address, bool privateAddr, IP ipConfig, DNS dnsConfig, Proxy proxyConfig)
-                    WifiDevice* device = new WifiDevice({devInfo.mName, devInfo.mAddress, static_cast<bool>(devInfo.mPrivateAddress), static_cast<WifiDevice::IP>(devInfo.mIPConfig),
-                                                        static_cast<WifiDevice::DNS>(devInfo.mDNSConfig), static_cast<WifiDevice::Proxy>(devInfo.mProxyConfig)});
+                    WifiDevice* device = new WifiDevice({devInfo.mName, devInfo.mAddress, static_cast<bool>(devInfo.mPrivateAddress)});
                     device->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Paired);
                     changeFlg = true;
                     mAdapter.mDeviceTable.emplace(devInfo.mAddress, device);
@@ -97,22 +95,23 @@ void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceI
     }
 }
 
-void WifiAdapterConnect::updateConnectedDevice(const WifiDeviceInfo& connectedDevice)
+void WifiAdapterConnect::updateConnectedDevice(const WifiConnectedDeviceInfo& connectedDevice)
 {
-//    std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.find(connectedDevice.mAddress);
-//    if (it != mAdapter.mDeviceTable.end())
-//    {
-//        if (it->second->getDeviceType() != WifiDevice::DeviceType::Connected)
-//        {
-//            it->second->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
-//            mAdapter.onConnectedDeviceChanged(it->second);
-//            return;
-//        }
-//    }
+    std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.find(connectedDevice.mDeviceInfo.mAddress);
+    if (it != mAdapter.mDeviceTable.end())
+    {
+        if (it->second->getDeviceType() != WifiDevice::DeviceType::Connected)
+        {
+            it->second->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
+            mAdapter.onConnectedDeviceChanged(it->second);
+        }
+        return;
+    }
 
-//    WifiDevice* device = new WifiDevice(connectedDevice.mName, connectedDevice.mAddress);
-//    device->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
-//    mAdapter.mDeviceTable.emplace(connectedDevice.mAddress, device);
+    WifiDevice* device = new WifiDevice({connectedDevice.mDeviceInfo.mName, connectedDevice.mDeviceInfo.mAddress, static_cast<bool>(connectedDevice.mDeviceInfo.mPrivateAddress)});
+    device->setData(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
+    mAdapter.mDeviceTable.emplace(connectedDevice.mDeviceInfo.mAddress, device);
+    mAdapter.onConnectedDeviceChanged(device);
 }
 
 void WifiAdapterConnect::updateWifiEnable(const bool &enable)
