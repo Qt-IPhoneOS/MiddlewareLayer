@@ -9,18 +9,10 @@ public:
     enum class DeviceProperty {
         Name,
         Password,
-        Address,
-        IPAddress,
-        Subnet,
-        Router,
-        PrivateAddress,
         LowDataMode,
         LimitIP,
         SpeedMode,
-        IP,
         DeviceType,
-        DNS,
-        Proxy,
         State
     };
 
@@ -66,35 +58,62 @@ public:
         Automatic
     };
 
-    WifiDevice(std::string name, std::string addr);
+    struct IPConfigInfo {
+        IPConfigInfo()
+        {
+        }
+
+        IP mIPConfig {IP::Automatic};
+        std::string mIPAddress {""};
+        std::string mSubnetMask {""};
+        std::string mRouter {""};
+    };
+
+    struct PairedDeviceInfo
+    {
+        PairedDeviceInfo(std::string name, std::string address, bool privateAddr, IP ipConfig, DNS dnsConfig, Proxy proxyConfig)
+        {
+            mName = name;
+            mAddress = address;
+            mPrivateAddress = privateAddr;
+            mIPConfig = ipConfig;
+            mDNSConfig = dnsConfig;
+            mProxyConfig = proxyConfig;
+        }
+
+        inline PairedDeviceInfo()
+        {
+        }
+
+        std::string mName {""};
+        std::string mAddress {""};
+        bool mPrivateAddress {false};
+        IP mIPConfig {IP::Automatic};
+        DNS mDNSConfig {DNS::Automatic};
+        Proxy mProxyConfig {Proxy::Automatic};
+    };
+
+    WifiDevice(const PairedDeviceInfo& info);
     ~WifiDevice();
 
     void setData(const DeviceProperty&, const CommonType&);
 
-    inline std::string getName() const { return mName; }
     inline std::string getPassword() const { return mPassword; }
-    inline std::string getAddress() const { return mAddress; }
-    inline std::string getIPAddress() const { return mIPAddress; }
-    inline std::string getSubnet() const { return mSubnet; }
-    inline std::string getRouter() const { return mRouter; }
-    inline bool getPrivateAddress() const { return mPrivateAddr; }
     inline bool getLowDataMode() const { return mLowDataMode; }
     inline bool getLimitIP() const { return mLimitIP; }
     inline SpeedMode getSpeedMode() const { return mSpeedMode; }
-    inline IP getIP() const { return mIP; }
     inline DeviceType getDeviceType() const { return mDeviceType; }
-    inline DNS getDNS() const { return mDNS; }
-    inline Proxy getProxy() const { return mProxy; }
     inline State getState() const { return mState; }
+    inline PairedDeviceInfo getPairedDeviceInfo() const { return mPairedDeviceInfo; }
+    inline IPConfigInfo getIPConfigInfo() const { return mIPConfigInfo; }
 
 private:
-    std::string mName, mPassword, mAddress, mIPAddress, mSubnet, mRouter;
-    bool mPrivateAddr, mLowDataMode, mLimitIP;
+    PairedDeviceInfo mPairedDeviceInfo;
+    IPConfigInfo mIPConfigInfo;
+    std::string mPassword;
+    bool mLowDataMode, mLimitIP;
     SpeedMode mSpeedMode;
-    IP mIP;
     DeviceType mDeviceType;
-    DNS mDNS;
-    Proxy mProxy;
     State mState;
 };
 
