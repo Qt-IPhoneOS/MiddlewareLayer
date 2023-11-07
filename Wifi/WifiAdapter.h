@@ -19,11 +19,6 @@ public:
     bool doConnect() override;
     bool doDisconnect() override;
 
-    signal::Signal<void(const bool&)> onWifiEnableChanged;
-    signal::Signal<void(const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
-    signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceChanged;
-    signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
-
     std::vector<WifiDevice*> getDevices() const;
     std::vector<WifiDevice*> getUnpairedDevices() const;
     std::vector<WifiDevice*> getPairedDevice() const;
@@ -34,6 +29,11 @@ public:
     void connectDevice(const std::string& address);
 
     bool getEnableWifi();
+
+    signal::Signal<void(const bool&)> onWifiEnableChanged;
+    signal::Signal<void(const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
+    signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceChanged;
+    signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
 
 protected:
     WifiAdapter();

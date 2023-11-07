@@ -7,32 +7,22 @@
 class WifiDevice {
 public:
     enum class DeviceProperty {
-        Name,
         Password,
-        LowDataMode,
-        LimitIP,
+        AutoConnect,
         SpeedMode,
-        DeviceType,
         State
     };
 
     enum class State {
         UnknownState,
         UnpairedState,
+        PairingState,
+        PairingFailState,
+        PairedState,
         WaitingAuthenState,
         AuthenFailState,
         AuthenSuccessState,
-        PairedState,
-        PairingState,
-        PairingFailState,
         ConnectedState
-    };
-
-    enum class DeviceType {
-        Unknown,
-        Connected,
-        Paired,
-        Unpaired
     };
 
     enum class SpeedMode {
@@ -41,16 +31,16 @@ public:
         Strong
     };
 
-    struct PairedDeviceInfo
+    struct DeviceInfo
     {
-        PairedDeviceInfo(std::string name, std::string address, bool privateAddr)
+        DeviceInfo(std::string name, std::string address, bool privateAddr)
         {
             mName = name;
             mAddress = address;
             mPrivateAddress = privateAddr;
         }
 
-        inline PairedDeviceInfo()
+        inline DeviceInfo()
         {
         }
 
@@ -59,23 +49,25 @@ public:
         bool mPrivateAddress {false};
     };
 
-    WifiDevice(const PairedDeviceInfo& info);
+    WifiDevice();
+    WifiDevice(const DeviceInfo& info);
+    WifiDevice(std::string name, std::string address, bool privateAddr, std::string password, bool autoConnect);
     ~WifiDevice();
 
     void setData(const DeviceProperty&, const CommonType&);
 
+    inline DeviceInfo getDeviceInfo() const { return mDeviceInfo; }
     inline std::string getPassword() const { return mPassword; }
+    inline bool getAutoConnect() const { return mAutoConnect; }
     inline SpeedMode getSpeedMode() const { return mSpeedMode; }
-    inline DeviceType getDeviceType() const { return mDeviceType; }
     inline State getState() const { return mState; }
-    inline PairedDeviceInfo getPairedDeviceInfo() const { return mPairedDeviceInfo; }
 
 private:
-    PairedDeviceInfo mPairedDeviceInfo;
-    std::string mPassword;
-    SpeedMode mSpeedMode;
-    DeviceType mDeviceType;
-    State mState;
+    DeviceInfo mDeviceInfo;
+    std::string mPassword {""};
+    bool mAutoConnect {false};
+    SpeedMode mSpeedMode {SpeedMode::Weak};
+    State mState {State::UnknownState};
 };
 
 #endif // WIFIDEVICE_H
