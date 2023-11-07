@@ -19,6 +19,7 @@ public:
     void updateWifiEnable(const bool&);
     void updatePairedDevices(const std::vector<WifiPairedDeviceInfo>& );
     void updateConnectedDevice(const WifiPairedDeviceInfo& );
+    void updateAuthenStatus(const std::string&, const WifiAuthenDeviceStatus&);
 };
 
 WifiAdapterConnect::WifiAdapterConnect(WifiAdapter &instance) : mAdapter(instance), mEvent(WifiServiceEvent::instance()), mProxy(WifiServiceProxy::instance())
@@ -39,6 +40,7 @@ void WifiAdapterConnect::connectEvent()
     mEvent->notifyUpdatePairedDevices.reqCallbackFunc(std::bind(&WifiAdapterConnect::updatePairedDevices, this, std::placeholders::_1));
     mEvent->notifyUpdateConnectedDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::updateConnectedDevice, this, std::placeholders::_1));
     mEvent->notifyUpdateEnableWifi.reqCallbackFunc(std::bind(&WifiAdapterConnect::updateWifiEnable, this, std::placeholders::_1));
+    mEvent->notifyUpdateAuthenStatus.reqCallbackFunc(std::bind(&WifiAdapterConnect::updateAuthenStatus, this, std::placeholders::_1, std::placeholders::_2));
 }
 
 void WifiAdapterConnect::disconnectEvent()
@@ -48,6 +50,7 @@ void WifiAdapterConnect::disconnectEvent()
     mEvent->notifyUpdatePairedDevices.unReqCallbackFunc();
     mEvent->notifyUpdateConnectedDevice.unReqCallbackFunc();
     mEvent->notifyUpdateEnableWifi.unReqCallbackFunc();
+    mEvent->notifyUpdateAuthenStatus.unReqCallbackFunc();
 }
 
 void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceInfo>& pairedDevices)
@@ -62,15 +65,17 @@ void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceI
                 std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.find(pairedDevice.mDeviceInfo.mAddress);
                 if (it != mAdapter.mDeviceTable.end())
                 {
-//                    if (it->second->getDeviceType() == WifiDevice::DeviceType::Paired)
-//                        continue;
+                    if (it->second->getState() == WifiDevice::State::PairedState)
+                        continue;
 
                     changeFlg = true;
+                    it->second->setData(WifiDevice::DeviceProperty::State, WifiDevice::State::PairedState);
                 }
                 else
                 {
                     WifiDevice* device = new WifiDevice({pairedDevice.mDeviceInfo.mName, pairedDevice.mDeviceInfo.mAddress, static_cast<bool>(pairedDevice.mDeviceInfo.mPrivateAddr)});
                     changeFlg = true;
+                    device->setData(WifiDevice::DeviceProperty::State, WifiDevice::State::PairedState);
                     mAdapter.mDeviceTable.emplace(pairedDevice.mDeviceInfo.mAddress, device);
                 }
             }
@@ -81,10 +86,10 @@ void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceI
             std::vector<WifiDevice*> temp;
             for (std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.begin(); it != mAdapter.mDeviceTable.end(); ++it)
             {
-                temp.push_back(it->second);
-//                if (it->second->getDeviceType() == WifiDevice::DeviceType::Paired)
-//                {
-//                }
+                if (it->second->getState() == WifiDevice::State::PairedState)
+                {
+                    temp.push_back(it->second);
+                }
             }
             if (temp.size())
                 mAdapter.onPairedDeviceChanged(temp);
@@ -97,10 +102,10 @@ void WifiAdapterConnect::updateConnectedDevice(const WifiPairedDeviceInfo& conne
     std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.find(connectedDevice.mDeviceInfo.mAddress);
     if (it != mAdapter.mDeviceTable.end())
     {
-//        if (it->second->getDeviceType() != WifiDevice::DeviceType::Connected)
-//        {
-//            mAdapter.onConnectedDeviceChanged(it->second);
-//        }
+        if (it->second->getState() != WifiDevice::State::ConnectedState)
+        {
+            mAdapter.onConnectedDeviceChanged(it->second);
+        }
         return;
     }
 
@@ -113,4 +118,9 @@ void WifiAdapterConnect::updateWifiEnable(const bool &enable)
 {
     std::shared_lock<std::shared_mutex> lock(mAdapter.mMutex);
     mAdapter.onWifiEnableChanged(enable);
+}
+
+void WifiAdapterConnect::updateAuthenStatus(const std::string& addr, const WifiAuthenDeviceStatus& status)
+{
+    qWarning() << "Address: " << addr.c_str() << "status: " << (int)status;
 }

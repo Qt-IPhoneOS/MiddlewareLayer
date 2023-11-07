@@ -16,8 +16,9 @@ public:
     enum class State {
         UnknownState,
         UnpairedState,
-        PairingState,
-        PairingFailState,
+        CheckingSSIDState,
+        CheckingSSIDFailState,
+        CheckingSSIDSuccessState,
         PairedState,
         WaitingAuthenState,
         AuthenFailState,
