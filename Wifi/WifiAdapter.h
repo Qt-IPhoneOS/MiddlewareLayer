@@ -27,11 +27,13 @@ public:
     // API Request
     void setEnableWifi(const bool&);
     void connectDevice(const std::string& address);
-
     bool getEnableWifi();
 
+    // Method
+    WifiDevice* getDevice(const std::string& address);
+
     signal::Signal<void(const bool&)> onWifiEnableChanged;
-    signal::Signal<void(const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
+    signal::Signal<void(const std::string&, const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
     signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceChanged;
     signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
 

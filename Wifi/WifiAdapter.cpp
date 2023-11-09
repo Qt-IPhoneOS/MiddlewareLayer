@@ -1,8 +1,6 @@
 #include "WifiAdapter.h"
 #include "WifiAdapterConnect.cpp"
 
-#define CheckNull(Ptr) if (Ptr == nullptr)
-
 WifiAdapter::WifiAdapter()
 {
     mConnect = new WifiAdapterConnect(*this);
@@ -21,13 +19,16 @@ WifiAdapter *WifiAdapter::instance()
 
 bool WifiAdapter::doConnect()
 {
+    if (mConnect->mProxy == nullptr)
+        return false;
+
     mConnect->mProxy->connectService();
     return true;
 }
 
 void WifiAdapter::setEnableWifi(const bool& enable)
 {
-    CheckNull(mConnect->mProxy)
+    if (mConnect->mProxy == nullptr)
         return;
 
     mConnect->mProxy->setEnableWifi(enable);
@@ -35,7 +36,7 @@ void WifiAdapter::setEnableWifi(const bool& enable)
 
 void WifiAdapter::connectDevice(const std::string &address)
 {
-    CheckNull(mConnect->mProxy)
+    if (mConnect->mProxy == nullptr)
         return;
 
     mConnect->mProxy->connectDevice(address);
@@ -43,15 +44,26 @@ void WifiAdapter::connectDevice(const std::string &address)
 
 bool WifiAdapter::getEnableWifi()
 {
-    CheckNull(mConnect->mProxy)
+    if (mConnect->mProxy == nullptr)
         return false;
 
     return mConnect->mProxy->getEnableWifi().get();
 }
 
+WifiDevice *WifiAdapter::getDevice(const std::string &address)
+{
+    std::unordered_map<std::string, WifiDevice*>::iterator it = mDeviceTable.find(address);
+    if (it != mDeviceTable.end())
+    {
+        return it->second;
+    }
+
+    return nullptr;
+}
+
 bool WifiAdapter::doDisconnect()
 {
-    CheckNull(mConnect->mProxy)
+    if (mConnect->mProxy == nullptr)
         return false;
 
     mConnect->mProxy->disconnectService();

@@ -123,4 +123,37 @@ void WifiAdapterConnect::updateWifiEnable(const bool &enable)
 void WifiAdapterConnect::updateAuthenStatus(const std::string& addr, const WifiAuthenDeviceStatus& status)
 {
     qWarning() << "Address: " << addr.c_str() << "status: " << (int)status;
+    std::unique_lock<std::shared_mutex> lock(mAdapter.mMutex);
+
+    WifiDevice* device = mAdapter.getDevice(addr);
+    if (device == nullptr)
+        return;
+
+    WifiDevice::State oldState, newState;
+    oldState = newState = device->getState();
+
+    switch (status) {
+    case WifiAuthenDeviceStatus::Authencating: {
+        if (device->getState() == WifiDevice::State::WaitingAuthenState || device->getState() == WifiDevice::State::PairedState)
+            newState = WifiDevice::State::WaitingAuthenState;
+        break;
+    }
+    case WifiAuthenDeviceStatus::AuthenSuccess: {
+        if (device->getState() == WifiDevice::State::WaitingAuthenState || device->getState() == WifiDevice::State::PairedState)
+            newState = WifiDevice::State::AuthenSuccessState;
+        break;
+    }
+    case WifiAuthenDeviceStatus::Fail: {
+        if (device->getState() == WifiDevice::State::WaitingAuthenState || device->getState() == WifiDevice::State::PairedState)
+            newState = WifiDevice::State::AuthenFailState;
+    }
+    default:
+        break;
+    }
+
+    if (oldState != newState)
+    {
+        device->setData(WifiDevice::DeviceProperty::State, newState);
+        mAdapter.onDeviceStateChanged(addr, oldState, newState);
+    }
 }
