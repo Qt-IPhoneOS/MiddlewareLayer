@@ -22,7 +22,7 @@ WifiDevice::~WifiDevice()
 {
 }
 
-void WifiDevice::setData(const DeviceProperty& property, const CommonType& value)
+void WifiDevice::setValue(const DeviceProperty& property, const CommonType& value)
 {
     switch(property) {
     case DeviceProperty::Password:

@@ -2,7 +2,7 @@
 #define WIFIDEVICE_H
 
 #include <string>
-#include <Feature/CommonType.h>
+#include <CommonType.h>
 
 class WifiDevice {
 public:
@@ -55,7 +55,7 @@ public:
     WifiDevice(std::string name, std::string address, bool privateAddr, std::string password, bool autoConnect);
     ~WifiDevice();
 
-    void setData(const DeviceProperty&, const CommonType&);
+    void setValue(const DeviceProperty&, const CommonType&);
 
     inline DeviceInfo getDeviceInfo() const { return mDeviceInfo; }
     inline std::string getPassword() const { return mPassword; }
