@@ -139,12 +139,12 @@ void WifiAdapterConnect::updateAuthenStatus(const std::string& addr, const WifiA
         break;
     }
     case WifiAuthenDeviceStatus::AuthenSuccess: {
-        if (device->getState() == WifiDevice::State::WaitingAuthenState || device->getState() == WifiDevice::State::PairedState)
+        if (device->getState() == WifiDevice::State::WaitingAuthenState)
             newState = WifiDevice::State::AuthenSuccessState;
         break;
     }
     case WifiAuthenDeviceStatus::Fail: {
-        if (device->getState() == WifiDevice::State::WaitingAuthenState || device->getState() == WifiDevice::State::PairedState)
+        if (device->getState() == WifiDevice::State::WaitingAuthenState)
             newState = WifiDevice::State::AuthenFailState;
     }
     default:
