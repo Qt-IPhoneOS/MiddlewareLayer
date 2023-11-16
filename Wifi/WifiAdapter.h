@@ -28,6 +28,7 @@ public:
     void setEnableWifi(const bool&);
     void connectDevice(const std::string& address);
     bool getEnableWifi();
+    void startDiscovery();
 
     // Method
     WifiDevice* getDevice(const std::string& address);

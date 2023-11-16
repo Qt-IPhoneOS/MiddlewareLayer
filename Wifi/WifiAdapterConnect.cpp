@@ -19,11 +19,13 @@ public:
     void notifyPairedDevices();
 
     void updateWifiEnable(const bool&);
-    void updatePairedDevices(const std::vector<WifiPairedDeviceInfo>& );
-    void updateConnectedDevice(const WifiPairedDeviceInfo& );
+    void updatePairedDevices(const std::vector<WifiDeviceInfo>& );
+    void updateConnectedDevice(const WifiDeviceInfo& );
     void updateAuthenStatus(const std::string&, const WifiAuthenDeviceStatus&);
     void removePairedDevice(const std::string&);
-    void addPairedDevice(const WifiPairedDeviceInfo&);
+    void addPairedDevice(const WifiDeviceInfo&);
+    void removeDiscoveryDevice(const std::string&);
+    void addDiscoveryDevice(const WifiDiscoveryDeviceInfo&);
 };
 
 WifiAdapterConnect::WifiAdapterConnect(WifiAdapter &instance) : mAdapter(instance), mEvent(WifiServiceEvent::instance()), mProxy(WifiServiceProxy::instance())
@@ -47,6 +49,8 @@ void WifiAdapterConnect::connectEvent()
     mEvent->notifyUpdateAuthenStatus.reqCallbackFunc(std::bind(&WifiAdapterConnect::updateAuthenStatus, this, std::placeholders::_1, std::placeholders::_2));
     mEvent->notifyRemovePairedDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::removePairedDevice, this, std::placeholders::_1));
     mEvent->notifyAddPairedDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::addPairedDevice, this, std::placeholders::_1));
+    mEvent->notifyAddDiscoveryDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::addDiscoveryDevice, this, std::placeholders::_1));
+    mEvent->notifyRemoveDiscoveryDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::removeDiscoveryDevice, this, std::placeholders::_1));
 }
 
 void WifiAdapterConnect::disconnectEvent()
@@ -57,6 +61,8 @@ void WifiAdapterConnect::disconnectEvent()
     mEvent->notifyUpdateConnectedDevice.unReqCallbackFunc();
     mEvent->notifyUpdateEnableWifi.unReqCallbackFunc();
     mEvent->notifyUpdateAuthenStatus.unReqCallbackFunc();
+    mEvent->notifyAddDiscoveryDevice.unReqCallbackFunc();
+    mEvent->notifyRemoveDiscoveryDevice.unReqCallbackFunc();
 }
 
 void WifiAdapterConnect::notifyPairedDevices()
@@ -73,7 +79,7 @@ void WifiAdapterConnect::notifyPairedDevices()
         mAdapter.onPairedDeviceChanged(temp);
 }
 
-void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceInfo>& pairedDevices)
+void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiDeviceInfo>& pairedDevices)
 {
     bool changeFlg = false;
     {
@@ -81,7 +87,7 @@ void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceI
         for (size_t i = 0; i < pairedDevices.size(); i++)
         {
             {
-                const WifiPairedDeviceInfo& pairedDevice = pairedDevices[i];
+                const WifiDeviceInfo& pairedDevice = pairedDevices[i];
                 std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.find(pairedDevice.mDeviceInfo.mAddress);
                 if (it != mAdapter.mDeviceTable.end())
                 {
@@ -107,7 +113,7 @@ void WifiAdapterConnect::updatePairedDevices(const std::vector<WifiPairedDeviceI
     }
 }
 
-void WifiAdapterConnect::updateConnectedDevice(const WifiPairedDeviceInfo& connectedDevice)
+void WifiAdapterConnect::updateConnectedDevice(const WifiDeviceInfo& connectedDevice)
 {
     std::shared_lock<std::shared_mutex> lock(mAdapter.mMutex);
 
@@ -188,7 +194,7 @@ void WifiAdapterConnect::removePairedDevice(const std::string &addr)
     }
 }
 
-void WifiAdapterConnect::addPairedDevice(const WifiPairedDeviceInfo &pairedDevice)
+void WifiAdapterConnect::addPairedDevice(const WifiDeviceInfo &pairedDevice)
 {
     bool changeFlg = false;
     {
@@ -214,4 +220,14 @@ void WifiAdapterConnect::addPairedDevice(const WifiPairedDeviceInfo &pairedDevic
     {
         notifyPairedDevices();
     }
+}
+
+void WifiAdapterConnect::removeDiscoveryDevice(const std::string &addr)
+{
+
+}
+
+void WifiAdapterConnect::addDiscoveryDevice(const WifiDiscoveryDeviceInfo &device)
+{
+    qWarning() << device.mAddress;
 }

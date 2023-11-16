@@ -50,6 +50,14 @@ bool WifiAdapter::getEnableWifi()
     return mConnect->mProxy->getEnableWifi().get();
 }
 
+void WifiAdapter::startDiscovery()
+{
+    if (mConnect->mProxy == nullptr)
+        return;
+
+    return mConnect->mProxy->startDiscovery();
+}
+
 WifiDevice *WifiAdapter::getDevice(const std::string &address)
 {
     std::unordered_map<std::string, WifiDevice*>::iterator it = mDeviceTable.find(address);
