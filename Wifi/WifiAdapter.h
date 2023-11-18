@@ -16,6 +16,12 @@ public:
     static WifiAdapter* instance();
     ~WifiAdapter();
 
+    enum class DiscoveryAction {
+        Add,
+        Remove,
+        LostConnected
+    };
+
     bool doConnect() override;
     bool doDisconnect() override;
 
@@ -37,6 +43,7 @@ public:
     signal::Signal<void(const std::string&, const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
     signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceChanged;
     signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
+    signal::Signal<void(const DiscoveryAction&, const WifiDevice::DeviceInfo&)> onDiscoveryDeviceUpdated;
 
 protected:
     WifiAdapter();

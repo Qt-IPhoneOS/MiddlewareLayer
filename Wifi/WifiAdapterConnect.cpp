@@ -230,4 +230,7 @@ void WifiAdapterConnect::removeDiscoveryDevice(const std::string &addr)
 void WifiAdapterConnect::addDiscoveryDevice(const WifiDiscoveryDeviceInfo &device)
 {
     qWarning() << device.mAddress;
+    std::unique_lock<std::shared_mutex> lock(mAdapter.mMutex);
+
+    mAdapter.onDiscoveryDeviceUpdated(WifiAdapter::DiscoveryAction::Add, {device.mName, device.mAddress, static_cast<bool>(device.mPrivateAddr)});
 }
