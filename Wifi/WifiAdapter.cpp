@@ -48,10 +48,27 @@ void WifiAdapter::connectDevice(const std::string &address)
 
     if (device->getDeviceType() == WifiDevice::DeviceType::Paired)
     {
+        if ((mAuthenState == State::WaitingAuthenState || mAuthenState == State::AuthenSuccessState) && mConnectingAddr != "")
+        {
+            WifiDevice* device = getDevice(mConnectingAddr);
+            if (device == nullptr)
+                return;
+            device->setValue(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Paired);
+            mConnect->notifyPairedDeviceList();
+        }
         mAuthenState = State::PairedState;
     }
     else if (device->getDeviceType() == WifiDevice::DeviceType::Unpaired)
     {
+        if ((mAuthenState == State::CheckingSSIDState || mAuthenState == State::CheckedSSIDSuccessState ||
+             mAuthenState == State::WaitingAuthenState || mAuthenState == State::AuthenSuccessState) && mConnectingAddr != "")
+        {
+            WifiDevice* device = getDevice(mConnectingAddr);
+            if (device == nullptr)
+                return;
+            device->setValue(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Unpaired);
+            onAddDiscoveryDevice(device);
+        }
         mAuthenState = State::UnpairedState;
     }
     else return;
@@ -112,5 +129,12 @@ std::vector<WifiDevice*> WifiAdapter::getPairedDevice() const
 
 WifiDevice* WifiAdapter::getConnectedDevice() const
 {
+    for (auto it = mDeviceTable.begin(); it != mDeviceTable.end(); ++it)
+    {
+        if (it->second->getDeviceType() == WifiDevice::DeviceType::Connected)
+        {
+            return it->second;
+        }
+    }
     return nullptr;
 }

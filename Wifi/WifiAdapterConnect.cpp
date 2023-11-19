@@ -118,6 +118,7 @@ void WifiAdapterConnect::updateConnectedDevice(const WifiDeviceInfo& connectedDe
     std::unique_lock<std::shared_mutex> lock(mAdapter.mMutex);
 
     std::unordered_map<std::string, WifiDevice*>::iterator it = mAdapter.mDeviceTable.find(connectedDevice.mDeviceInfo.mAddress);
+    mAdapter.mConnectingAddr = "";
     if (it != mAdapter.mDeviceTable.end())
     {
         if (it->second->getDeviceType() != WifiDevice::DeviceType::Connected)
@@ -129,6 +130,7 @@ void WifiAdapterConnect::updateConnectedDevice(const WifiDeviceInfo& connectedDe
     }
 
     WifiDevice* device = new WifiDevice({connectedDevice.mDeviceInfo.mName, connectedDevice.mDeviceInfo.mAddress, static_cast<bool>(connectedDevice.mDeviceInfo.mPrivateAddr)});
+    device->setValue(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Connected);
     mAdapter.mDeviceTable.emplace(connectedDevice.mDeviceInfo.mAddress, device);
     mAdapter.onConnectedDeviceChanged(device);
 }
@@ -143,25 +145,24 @@ void WifiAdapterConnect::updateAuthenStatus(const std::string& addr, const WifiA
 {
     std::unique_lock<std::shared_mutex> lock(mAdapter.mMutex);
 
-    qWarning() << "AA: " << (int)status;
-
     WifiDevice* device = mAdapter.getDevice(addr);
     if (device == nullptr)
         return;
 
     WifiAdapter::State oldState, newState;
     oldState = newState = mAdapter.mAuthenState;
-    qWarning() << "BB: " << (int)mAdapter.mAuthenState;
+    mAdapter.mConnectingAddr = addr;
 
 
     switch (status) {
     case WifiAuthenDeviceStatus::CheckingSSID: {
+        qWarning() << "1";
         if (mAdapter.mAuthenState == WifiAdapter::State::CheckingSSIDState || mAdapter.mAuthenState == WifiAdapter::State::UnpairedState) {
+            qWarning() << "2";
             newState = WifiAdapter::State::CheckingSSIDState;
-            qWarning() << "DD";
             if (device->getDeviceType() == WifiDevice::DeviceType::Unpaired)
             {
-                qWarning() << "EE";
+                qWarning() << "3";
                 device->setValue(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Pairing);
                 mAdapter.onRemoveDiscoveryDevice(addr);
             }
@@ -199,21 +200,31 @@ void WifiAdapterConnect::updateAuthenStatus(const std::string& addr, const WifiA
                 notifyPairedDeviceList();
             }
         }
-        if (mAdapter.mAuthenState == WifiAdapter::State::CheckingSSIDState)
+        else if (mAdapter.mAuthenState == WifiAdapter::State::CheckingSSIDState)
         {
             newState = WifiAdapter::State::CheckedSSIDFailState;
+            if (device->getDeviceType() == WifiDevice::DeviceType::Pairing)
+            {
+                device->setValue(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Unpaired);
+                mAdapter.onAddDiscoveryDevice(device);
+            }
         }
+        WifiDevice* connectedDevice = mAdapter.getConnectedDevice();
+        if (connectedDevice != nullptr)
+        {
+            mAdapter.onConnectedDeviceChanged(connectedDevice);
+        }
+        mAdapter.mConnectingAddr = "";
         break;
     }
     default:
         break;
     }
 
-    qWarning() << "CC: " << (int)newState;
-
     if (oldState != newState)
     {
         mAdapter.onDeviceStateChanged(device->getDeviceInfo().mName, oldState, newState);
+        mAdapter.mAuthenState = newState;
     }
 }
 

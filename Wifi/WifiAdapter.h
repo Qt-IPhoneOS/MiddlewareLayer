@@ -61,6 +61,7 @@ protected:
     WifiAdapterConnect* mConnect {nullptr};
     std::string mDeviceName {""};
     State mAuthenState {State::UnknownState};
+    std::string mConnectingAddr {""};
     std::unordered_map<std::string, WifiDevice*> mDeviceTable;
 };
 
