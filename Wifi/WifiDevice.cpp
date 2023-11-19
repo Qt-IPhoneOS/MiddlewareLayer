@@ -22,7 +22,7 @@ WifiDevice::~WifiDevice()
 {
 }
 
-void WifiDevice::setData(const DeviceProperty& property, const CommonType& value)
+void WifiDevice::setValue(const DeviceProperty& property, const CommonType& value)
 {
     switch(property) {
     case DeviceProperty::Password:
@@ -34,8 +34,8 @@ void WifiDevice::setData(const DeviceProperty& property, const CommonType& value
     case DeviceProperty::SpeedMode:
         mSpeedMode = value.value<SpeedMode>();
         return;
-    case DeviceProperty::State:
-        mState = value.value<State>();
+    case DeviceProperty::DeviceType:
+        mType = value.value<DeviceType>();
         return;
     default:
         return;
