@@ -3,8 +3,8 @@
 
 #include <Common/AbstractInterface.h>
 #include <shared_mutex>
-#include <unordered_map>
 #include <Signal.h>
+#include <unordered_map>
 #include <CommonType.h>
 #include <StackingTask.h>
 #include "WifiDevice.h"
@@ -16,10 +16,16 @@ public:
     static WifiAdapter* instance();
     ~WifiAdapter();
 
-    enum class DiscoveryAction {
-        Add,
-        Remove,
-        LostConnected
+    enum class State {
+        UnknownState,
+        UnpairedState,
+        CheckingSSIDState,
+        CheckedSSIDFailState,
+        CheckedSSIDSuccessState,
+        PairedState,
+        WaitingAuthenState,
+        AuthenFailState,
+        AuthenSuccessState
     };
 
     bool doConnect() override;
@@ -40,10 +46,11 @@ public:
     WifiDevice* getDevice(const std::string& address);
 
     signal::Signal<void(const bool&)> onWifiEnableChanged;
-    signal::Signal<void(const std::string&, const WifiDevice::State&, const WifiDevice::State&)> onDeviceStateChanged;
-    signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceChanged;
+    signal::Signal<void(const std::string&, const State&, const State&)> onDeviceStateChanged;
+    signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceListChanged;
     signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
-    signal::Signal<void(const DiscoveryAction&, const WifiDevice::DeviceInfo&)> onDiscoveryDeviceUpdated;
+    signal::Signal<void(WifiDevice*)> onAddDiscoveryDevice;
+    signal::Signal<void(const std::string&)> onRemoveDiscoveryDevice;
 
 protected:
     WifiAdapter();
@@ -53,6 +60,7 @@ protected:
     std::shared_mutex mMutex;
     WifiAdapterConnect* mConnect {nullptr};
     std::string mDeviceName {""};
+    State mAuthenState {State::UnknownState};
     std::unordered_map<std::string, WifiDevice*> mDeviceTable;
 };
 

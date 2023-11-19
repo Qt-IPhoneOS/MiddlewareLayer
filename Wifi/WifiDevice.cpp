@@ -34,8 +34,8 @@ void WifiDevice::setValue(const DeviceProperty& property, const CommonType& valu
     case DeviceProperty::SpeedMode:
         mSpeedMode = value.value<SpeedMode>();
         return;
-    case DeviceProperty::State:
-        mState = value.value<State>();
+    case DeviceProperty::DeviceType:
+        mType = value.value<DeviceType>();
         return;
     default:
         return;

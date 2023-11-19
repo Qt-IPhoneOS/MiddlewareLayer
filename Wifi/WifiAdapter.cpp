@@ -39,6 +39,23 @@ void WifiAdapter::connectDevice(const std::string &address)
     if (mConnect->mProxy == nullptr)
         return;
 
+    WifiDevice* device = getDevice(address);
+    if (device == nullptr)
+        return;
+
+    State oldState, newState;
+    oldState = newState = mAuthenState;
+
+    if (device->getDeviceType() == WifiDevice::DeviceType::Paired)
+    {
+        mAuthenState = State::PairedState;
+    }
+    else if (device->getDeviceType() == WifiDevice::DeviceType::Unpaired)
+    {
+        mAuthenState = State::UnpairedState;
+    }
+    else return;
+
     mConnect->mProxy->connectDevice(address);
 }
 
