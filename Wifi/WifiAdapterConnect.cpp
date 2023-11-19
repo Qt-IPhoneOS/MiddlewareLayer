@@ -156,13 +156,10 @@ void WifiAdapterConnect::updateAuthenStatus(const std::string& addr, const WifiA
 
     switch (status) {
     case WifiAuthenDeviceStatus::CheckingSSID: {
-        qWarning() << "1";
         if (mAdapter.mAuthenState == WifiAdapter::State::CheckingSSIDState || mAdapter.mAuthenState == WifiAdapter::State::UnpairedState) {
-            qWarning() << "2";
             newState = WifiAdapter::State::CheckingSSIDState;
             if (device->getDeviceType() == WifiDevice::DeviceType::Unpaired)
             {
-                qWarning() << "3";
                 device->setValue(WifiDevice::DeviceProperty::DeviceType, WifiDevice::DeviceType::Pairing);
                 mAdapter.onRemoveDiscoveryDevice(addr);
             }
