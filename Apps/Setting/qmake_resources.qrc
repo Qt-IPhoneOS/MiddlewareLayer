@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/Setting">
+<file alias="Screen/main.qml">/home/thaivodinh/Desktop/MY_PROJECT/Qt-IPhoneOS/IPhoneOS/Apps/Setting/Screen/main.qml</file>
+</qresource>
+</RCC>
