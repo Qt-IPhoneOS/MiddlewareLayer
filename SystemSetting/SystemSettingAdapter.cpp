@@ -1,7 +1,8 @@
 #include "SystemSettingAdapter.h"
-#include <SystemSetting/SystemSettingProxy.h>
+#include "SystemSettingConnect.cpp"
+
 SystemSettingAdapter::SystemSettingAdapter()
-    : mSysConnect(new SystemSettingConnect())
+    : mSysConnect(new SystemSettingConnect(*this))
 {
 
 }
@@ -27,7 +28,7 @@ SystemSettingAdapter::AirplaneModeEnums SystemSettingAdapter::getAirplaneMode() 
     return mAirplaneMode;
 }
 
-bool SystemSettingAdapter::setNewAirplaneMode(const AirplaneModeEnums& newAirplaneMode) {
+void SystemSettingAdapter::setNewAirplaneMode(const AirplaneModeEnums& newAirplaneMode) {
     mSysConnect->mSysProxy.setAirplaneMode(static_cast<AirplaneModeTypes>(newAirplaneMode));
 }
 

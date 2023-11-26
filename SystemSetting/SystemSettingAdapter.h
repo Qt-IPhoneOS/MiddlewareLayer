@@ -4,8 +4,10 @@
 #include <Common/AbstractInterface.h>
 #include <Feature/Signal.h>
 #include <shared_mutex>
-#include "SystemSettingConnect.cpp"
+
+class SystemSettingConnect;
 class SystemSettingAdapter final : public AbstractInterface {
+    friend class SystemSettingConnect;
 public:
     static SystemSettingAdapter& getInstance();
     ~SystemSettingAdapter();
@@ -20,7 +22,7 @@ public:
 
 public:
     AirplaneModeEnums getAirplaneMode() const;
-    bool setNewAirplaneMode(const AirplaneModeEnums&);
+    void setNewAirplaneMode(const AirplaneModeEnums&);
 
     signal::Signal<void(const AirplaneModeEnums&)> notifyUpdateAirplaneMode;
 
