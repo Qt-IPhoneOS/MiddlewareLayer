@@ -1,10 +1,9 @@
 #include "SystemSettingAdapter.h"
-
-SystemSettingAdapter::SystemSettingAdapter() 
-    // : mSysProxy(SystemSettingProxy::getInstance())
-    , mSysEvent(SystemSettingEvent::getInstance())
+#include <SystemSetting/SystemSettingProxy.h>
+SystemSettingAdapter::SystemSettingAdapter()
+    : mSysConnect(new SystemSettingConnect())
 {
-    mSysEvent.notifyUpdateAirplaneMode.reqCallbackFunc(std::bind(&SystemSettingAdapter::updateHandleDataAirplaneMode, this, std::placeholders::_1));
+
 }
 
 SystemSettingAdapter::~SystemSettingAdapter() {
@@ -17,18 +16,18 @@ SystemSettingAdapter& SystemSettingAdapter::getInstance() {
 }
 
 bool SystemSettingAdapter::doConnect() {
-    mSysProxy.connectService();
+
 }
 
 bool SystemSettingAdapter::doDisconnect() {
-    mSysProxy.disconnectService();
+
+}
+
+SystemSettingAdapter::AirplaneModeEnums SystemSettingAdapter::getAirplaneMode() const {
+    return mAirplaneMode;
 }
 
 bool SystemSettingAdapter::setNewAirplaneMode(const AirplaneModeEnums& newAirplaneMode) {
-    // mSysProxy.setAirplaneMode(static_cast<AirplaneModeTypes>(newAirplaneMode));
+    mSysConnect->mSysProxy.setAirplaneMode(static_cast<AirplaneModeTypes>(newAirplaneMode));
 }
 
-
-void SystemSettingAdapter::updateHandleDataAirplaneMode(const AirplaneModeTypes& airplaneMode) {
-    
-}

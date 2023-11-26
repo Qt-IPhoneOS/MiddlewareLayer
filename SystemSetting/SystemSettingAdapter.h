@@ -4,8 +4,7 @@
 #include <Common/AbstractInterface.h>
 #include <Feature/Signal.h>
 #include <shared_mutex>
-#include "SystemSettingServices/SystemSettingProxy.h"
-
+#include "SystemSettingConnect.cpp"
 class SystemSettingAdapter final : public AbstractInterface {
 public:
     static SystemSettingAdapter& getInstance();
@@ -20,17 +19,14 @@ public:
     bool doDisconnect() override;
 
 public:
+    AirplaneModeEnums getAirplaneMode() const;
     bool setNewAirplaneMode(const AirplaneModeEnums&);
-    void updateHandleDataAirplaneMode(const AirplaneModeTypes&);
 
-public:
     signal::Signal<void(const AirplaneModeEnums&)> notifyUpdateAirplaneMode;
 
 private:
-    SystemSettingProxy& mSysProxy;
-    SystemSettingEvent& mSysEvent;
+    SystemSettingConnect* mSysConnect;
     AirplaneModeEnums mAirplaneMode = AirplaneModeEnums::Inactive;
-
 
 private: // singleton
     SystemSettingAdapter();

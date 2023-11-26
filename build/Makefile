@@ -17,7 +17,7 @@ CXX           = g++
 DEFINES       = -DQT_NO_DEBUG -DQT_VIRTUALKEYBOARD_LIB -DQT_QUICK_LIB -DQT_OPENGL_LIB -DQT_GUI_LIB -DQT_QMLMODELS_LIB -DQT_QML_LIB -DQT_QMLINTEGRATION_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -O2 -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
 CXXFLAGS      = -pipe -O2 -std=gnu++2a -Wall -Wextra -D_REENTRANT -fPIC $(DEFINES)
-INCPATH       = -I../../MiddlewareLayer -I. -I../../Apps/UICommon -I../../Apps/UICommon/Feature -I../../Services/include -I../../Services/include/Common -I../../Services/include/Wifi -I../../Services/include/SystemSettingServices -I../../Services/include/Common/BaseClass -I/home/thaivodinh/Qt/6.6.0/gcc_64/include -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtVirtualKeyboard -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQuick -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtOpenGL -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtGui -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQmlModels -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQml -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQmlIntegration -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtNetwork -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtCore -I. -I/home/thaivodinh/Qt/6.6.0/gcc_64/mkspecs/linux-g++
+INCPATH       = -I../../MiddlewareLayer -I. -I../../Apps/UICommon -I../../Apps/UICommon/Feature -I../../Services/include -I../../Services/include/Common -I../../Services/include/Wifi -I../../Services/include/SystemSetting -I../../Services/include/Common/BaseClass -I/home/thaivodinh/Qt/6.6.0/gcc_64/include -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtVirtualKeyboard -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQuick -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtOpenGL -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtGui -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQmlModels -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQml -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtQmlIntegration -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtNetwork -I/home/thaivodinh/Qt/6.6.0/gcc_64/include/QtCore -I. -I/home/thaivodinh/Qt/6.6.0/gcc_64/mkspecs/linux-g++
 QMAKE         = /home/thaivodinh/Qt/6.6.0/gcc_64/bin/qmake6
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -1243,20 +1243,21 @@ WifiDevice.o: ../Wifi/WifiDevice.cpp ../Wifi/WifiDevice.h \
 SystemSettingAdapter.o: ../SystemSetting/SystemSettingAdapter.cpp ../SystemSetting/SystemSettingAdapter.h \
 		../Common/AbstractInterface.h \
 		../../Apps/UICommon/Feature/Signal.h \
-		../../Services/include/SystemSettingServices/SystemSettingProxy.h \
-		../../Services/include/SystemSettingServices/SystemSettingDefine.h \
-		../../Services/include/SystemSettingServices/SystemSettingHandler.h \
-		../../Services/include/ServiceEngine.h \
-		../../Services/include/Common/BaseClass/UpdateEngine.h \
-		../../Services/include/Common/Utils/Utils.h \
-		../../Services/include/Common/Utils/Logger.h \
-		../../Services/include/SystemSettingServices/SystemSettingEvent.h \
+		../SystemSetting/SystemSettingConnect.cpp \
+		../../Services/include/SystemSetting/SystemSettingProxy.h \
 		../../Services/include/Common/BaseClass/AbstractService.h \
 		../../Services/include/Common/Event/EventHandler.h \
 		../../Services/include/Common/Event/EventEmitter.h \
 		../../Services/include/Common/Utils/Std/UnorderedMap.h \
 		../../Services/include/Common/Event/Event.h \
-		../../Services/include/Common/Event/Enums.h
+		../../Services/include/Common/Event/Enums.h \
+		../../Services/include/ServiceEngine.h \
+		../../Services/include/Common/BaseClass/UpdateEngine.h \
+		../../Services/include/Common/Utils/Utils.h \
+		../../Services/include/Common/Utils/Logger.h \
+		../../Services/include/SystemSetting/SystemSettingDefine.h \
+		../../Services/include/SystemSetting/SystemSettingHandler.h \
+		../../Services/include/SystemSetting/SystemSettingEvent.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SystemSettingAdapter.o ../SystemSetting/SystemSettingAdapter.cpp
 
 ####### Install
