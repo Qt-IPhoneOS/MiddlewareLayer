@@ -21,7 +21,8 @@ SOURCES += \
     Wifi/WifiAdapter.cpp \
     Wifi/WifiAdapterConnect.cpp \
     Wifi/WifiDevice.cpp \
-    SystemSetting/SystemSettingAdapter.cpp
+    SystemSetting/SystemSettingAdapter.cpp \
+    SystemSetting/SystemSettingConnect.cpp
 
 HEADERS += \
     Common/AbstractInterface.h \

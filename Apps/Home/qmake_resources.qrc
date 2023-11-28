@@ -1,5 +1,0 @@
-<!DOCTYPE RCC><RCC version="1.0">
-<qresource prefix="/Home">
-<file alias="Component/main.qml">/home/thaivodinh/Desktop/MY_PROJECT/Qt-IPhoneOS/IPhoneOS/Apps/Home/Component/main.qml</file>
-</qresource>
-</RCC>
