@@ -14,10 +14,16 @@ INCLUDEPATH += $$PWD/../Apps/UICommon \
                $$PWD/../Services/include/Common \
                $$PWD/../Services/include/Wifi \
                $$PWD/../Services/include/SystemSetting \
+               $$PWD/../Services/include/SIM \
+               $$PWD/../Services/include/PhoneBook \
                $$PWD/../Services/include/Common/BaseClass
 
 SOURCES += \
     Common/AbstractInterface.cpp \
+    PhoneBook/PhoneBookAdapter.cpp \
+    PhoneBook/PhoneBookConnect.cpp \
+    SIM/SIMAdapter.cpp \
+    SIM/SIMConnect.cpp \
     Wifi/WifiAdapter.cpp \
     Wifi/WifiAdapterConnect.cpp \
     Wifi/WifiDevice.cpp \
@@ -26,6 +32,8 @@ SOURCES += \
 
 HEADERS += \
     Common/AbstractInterface.h \
+    PhoneBook/PhoneBookAdapter.h \
+    SIM/SIMAdapter.h \
     Wifi/WifiAdapter.h \
     Wifi/WifiDevice.h \ 
     SystemSetting/SystemSettingAdapter.h
