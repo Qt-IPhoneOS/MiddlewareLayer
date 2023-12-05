@@ -9,7 +9,7 @@ class SIMConnect;
 class SIMAdapter final : public AbstractInterface {
     friend class SIMConnect;
 public:
-    static SIMAdapter& getInstance();
+    static SIMAdapter& instance();
     ~SIMAdapter();
 
     bool doConnect() override;

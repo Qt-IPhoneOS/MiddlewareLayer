@@ -13,8 +13,8 @@ public:
     WifiServiceEvent* mEvent {nullptr};
     WifiServiceProxy* mProxy {nullptr};
 
-    void connectEvent();
-    void disconnectEvent();
+    void onServiceConnected();
+    void onServiceDisconnected();
 
     void notifyPairedDeviceList();
 
@@ -31,15 +31,15 @@ WifiAdapterConnect::WifiAdapterConnect(WifiAdapter &instance) : mAdapter(instanc
     if (mProxy == nullptr)
         throw std::runtime_error("Create WifiService backend is failed");
 
-    mEvent->connectEvent.reqCallbackFunc(std::bind(&WifiAdapterConnect::connectEvent, this));
-    mEvent->disconnectEvent.reqCallbackFunc(std::bind(&WifiAdapterConnect::disconnectEvent, this));
+    mEvent->notifyConnectedEvent.reqCallbackFunc(std::bind(&WifiAdapterConnect::onServiceConnected, this));
+    mEvent->notifyDisconnectedEvent.reqCallbackFunc(std::bind(&WifiAdapterConnect::onServiceDisconnected, this));
 }
 
 WifiAdapterConnect::~WifiAdapterConnect()
 {
 }
 
-void WifiAdapterConnect::connectEvent()
+void WifiAdapterConnect::onServiceConnected()
 {
     mEvent->notifyPairedDeviceListChanged.reqCallbackFunc(std::bind(&WifiAdapterConnect::updatePairedDeviceList, this));
     mEvent->notifyUpdateConnectedDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::updateConnectedDevice, this, std::placeholders::_1));
@@ -49,10 +49,10 @@ void WifiAdapterConnect::connectEvent()
     mEvent->notifyRemoveDiscoveryDevice.reqCallbackFunc(std::bind(&WifiAdapterConnect::removeDiscoveryDevice, this, std::placeholders::_1));
 }
 
-void WifiAdapterConnect::disconnectEvent()
+void WifiAdapterConnect::onServiceDisconnected()
 {
-    mEvent->connectEvent.unReqCallbackFunc();
-    mEvent->disconnectEvent.unReqCallbackFunc();
+    mEvent->notifyConnectedEvent.unReqCallbackFunc();
+    mEvent->notifyDisconnectedEvent.unReqCallbackFunc();
     mEvent->notifyPairedDeviceListChanged.unReqCallbackFunc();
     mEvent->notifyUpdateConnectedDevice.unReqCallbackFunc();
     mEvent->notifyUpdateEnableWifi.unReqCallbackFunc();

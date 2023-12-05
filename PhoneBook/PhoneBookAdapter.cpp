@@ -11,7 +11,7 @@ PhoneBookAdapter::~PhoneBookAdapter() {
 
 }
 
-PhoneBookAdapter& PhoneBookAdapter::getInstance() {
+PhoneBookAdapter& PhoneBookAdapter::instance() {
     static PhoneBookAdapter instance;
     return instance;
 }

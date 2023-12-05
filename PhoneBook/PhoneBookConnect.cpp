@@ -1,5 +1,5 @@
-#include <PhoneBook/PhoneBookProxy.h>
-#include <PhoneBook/PhoneBookEvent.h>
+#include <PhoneBook/PhoneBookServiceProxy.h>
+#include <PhoneBook/PhoneBookServiceEvent.h>
 #include <PhoneBook/PhoneBookAdapter.h>
 
 class PhoneBookConnect {
@@ -7,19 +7,22 @@ public:
     PhoneBookConnect(PhoneBookAdapter& instance);
     ~PhoneBookConnect();
 
-    PhoneBookProxy& mProxy;
-    PhoneBookEvent& mEvent;
+    PhoneBookServiceProxy* mProxy {nullptr};
+    PhoneBookServiceEvent* mEvent {nullptr};
     PhoneBookAdapter& mAdaper;
 };
 
 
 PhoneBookConnect::PhoneBookConnect(PhoneBookAdapter& instance)
-    : mProxy(PhoneBookProxy::getInstance())
-    , mEvent(PhoneBookEvent::getInstance())
+    : mProxy(PhoneBookServiceProxy::instance())
+    , mEvent(PhoneBookServiceEvent::instance())
     , mAdaper(instance)
 {
+    if (mProxy == nullptr)
+        throw std::runtime_error("Create WifiService backend is failed");
 }
 
-PhoneBookConnect::~PhoneBookConnect() {
+PhoneBookConnect::~PhoneBookConnect()
+{
 
 }

@@ -11,24 +11,24 @@ SIMAdapter::~SIMAdapter() {
 
 }
 
-SIMAdapter& SIMAdapter::getInstance() {
+SIMAdapter& SIMAdapter::instance() {
     static SIMAdapter instance;
     return instance;
 }
 
 bool SIMAdapter::doConnect() {
-    if (mConnect->mProxy == nullptr)
-        return false;
+//    if (mConnect->mProxy == nullptr)
+//        return false;
 
-    mConnect->mProxy->connectService();
+//    mConnect->mProxy->connectService();
     return true;
 }
 
 bool SIMAdapter::doDisconnect() {
-    if (mConnect->mProxy == nullptr)
-        return false;
+//    if (mConnect->mProxy == nullptr)
+//        return false;
 
-    mConnect->mProxy->disconnectService();
+//    mConnect->mProxy->disconnectService();
     return true;
 }
 

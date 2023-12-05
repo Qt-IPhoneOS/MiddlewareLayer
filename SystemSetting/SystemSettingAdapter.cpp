@@ -11,7 +11,7 @@ SystemSettingAdapter::~SystemSettingAdapter() {
 
 }
 
-SystemSettingAdapter& SystemSettingAdapter::getInstance() {
+SystemSettingAdapter& SystemSettingAdapter::instance() {
     static SystemSettingAdapter instance;
     return instance;
 }

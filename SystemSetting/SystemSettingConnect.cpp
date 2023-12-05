@@ -16,8 +16,8 @@ public:
 
 
 SystemSettingConnect::SystemSettingConnect(SystemSettingAdapter& instance)
-    : mSysProxy(SystemSettingProxy::getInstance())
-    , mSysEvent(SystemSettingEvent::getInstance())
+    : mSysProxy(SystemSettingProxy::instance())
+    , mSysEvent(SystemSettingEvent::instance())
     , mSysAdap(instance)
 {
     mSysEvent.notifyUpdateAirplaneMode.reqCallbackFunc(std::bind(&SystemSettingConnect::updateHandleDataAirplaneMode, this, std::placeholders::_1));

@@ -14,8 +14,8 @@ public:
 
 
 SIMConnect::SIMConnect(SIMAdapter& instance)
-    : mProxy(SIMProxy::getInstance())
-    , mEvent(SIMEvent::getInstance())
+    : mProxy(SIMProxy::instance())
+    , mEvent(SIMEvent::instance())
     , mAdaper(instance)
 {
 }

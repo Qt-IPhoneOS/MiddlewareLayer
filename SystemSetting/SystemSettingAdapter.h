@@ -9,7 +9,7 @@ class SystemSettingConnect;
 class SystemSettingAdapter final : public AbstractInterface {
     friend class SystemSettingConnect;
 public:
-    static SystemSettingAdapter& getInstance();
+    static SystemSettingAdapter& instance();
     ~SystemSettingAdapter();
 
     enum class AirplaneModeEnums {

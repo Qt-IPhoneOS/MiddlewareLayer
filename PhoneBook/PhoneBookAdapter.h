@@ -9,7 +9,7 @@ class PhoneBookConnect;
 class PhoneBookAdapter final : public AbstractInterface {
     friend class PhoneBookConnect;
 public:
-    static PhoneBookAdapter& getInstance();
+    static PhoneBookAdapter& instance();
     ~PhoneBookAdapter();
 
     bool doConnect() override;
