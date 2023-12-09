@@ -4,10 +4,29 @@
 #include <Common/AbstractInterface.h>
 #include <Feature/Signal.h>
 #include <shared_mutex>
+#include <list>
 
-class PhoneBookConnect;
+struct ContactInfo {
+    uint32_t id;
+    std::string firstName;
+    std::string lastName;
+    std::string formatName;
+    std::string phoneNumber;
+    std::string photo;
+    bool isFav;
+};
+
+struct HistoryInfo {
+    uint32_t id;
+    std::string formatName;
+    std::string phoneNumber;
+    std::string time;
+    int callingType;
+};
+
+class PhoneBookAdapterConnect;
 class PhoneBookAdapter final : public AbstractInterface {
-    friend class PhoneBookConnect;
+    friend class PhoneBookAdapterConnect;
 public:
     static PhoneBookAdapter& instance();
     ~PhoneBookAdapter();
@@ -15,8 +34,11 @@ public:
     bool doConnect() override;
     bool doDisconnect() override;
 
+    signal::Signal<void(const std::list<ContactInfo>&)> onContactListChanged;
+    signal::Signal<void(const std::list<HistoryInfo>&)> onHistoryListChanged;
+
 private:
-    PhoneBookConnect* mConnect;
+    PhoneBookAdapterConnect* mConnect;
 
 private: // singleton
     PhoneBookAdapter();

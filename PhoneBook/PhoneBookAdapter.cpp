@@ -1,8 +1,8 @@
 #include "PhoneBookAdapter.h"
-#include "PhoneBookConnect.cpp"
+#include "PhoneBookAdapterConnect.cpp"
 
 PhoneBookAdapter::PhoneBookAdapter()
-    : mConnect(new PhoneBookConnect(*this))
+    : mConnect(new PhoneBookAdapterConnect(*this))
 {
 
 }

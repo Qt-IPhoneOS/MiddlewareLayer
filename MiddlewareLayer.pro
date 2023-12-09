@@ -21,7 +21,7 @@ INCLUDEPATH += $$PWD/../Apps/UICommon \
 SOURCES += \
     Common/AbstractInterface.cpp \
     PhoneBook/PhoneBookAdapter.cpp \
-    PhoneBook/PhoneBookConnect.cpp \
+    PhoneBook/PhoneBookAdapterConnect.cpp \
     SIM/SIMAdapter.cpp \
     SIM/SIMConnect.cpp \
     Wifi/WifiAdapter.cpp \
