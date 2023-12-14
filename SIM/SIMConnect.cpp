@@ -2,6 +2,8 @@
 #include <SIM/SIMServiceEvent.h>
 #include <SIM/SIMAdapter.h>
 
+namespace midlayer {
+
 class SIMConnect {
 public:
     SIMConnect(SIMAdapter& instance);
@@ -21,5 +23,7 @@ SIMConnect::SIMConnect(SIMAdapter& instance)
 }
 
 SIMConnect::~SIMConnect() {
+
+}
 
 }

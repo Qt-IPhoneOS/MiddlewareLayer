@@ -9,6 +9,8 @@
 #include <StackingTask.h>
 #include "WifiDevice.h"
 
+namespace midlayer {
+
 class WifiAdapterConnect;
 class WifiAdapter final : public AbstractInterface {
     friend class WifiAdapterConnect;
@@ -64,5 +66,7 @@ protected:
     std::string mConnectingAddr {""};
     std::unordered_map<std::string, WifiDevice*> mDeviceTable;
 };
+
+}
 
 #endif // WIFIADAPTER_H

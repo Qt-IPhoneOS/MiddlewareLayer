@@ -1,6 +1,8 @@
 #include "WifiDevice.h"
 #include <QDebug>
 
+using namespace midlayer;
+
 WifiDevice::WifiDevice()
 {
 }

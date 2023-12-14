@@ -1,6 +1,8 @@
 #include "WifiAdapter.h"
 #include "WifiAdapterConnect.cpp"
 
+using namespace midlayer;
+
 WifiAdapter::WifiAdapter()
 {
     mConnect = new WifiAdapterConnect(*this);

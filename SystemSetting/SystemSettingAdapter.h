@@ -5,6 +5,8 @@
 #include <Feature/Signal.h>
 #include <shared_mutex>
 
+namespace midlayer {
+
 class SystemSettingConnect;
 class SystemSettingAdapter final : public AbstractInterface {
     friend class SystemSettingConnect;
@@ -33,5 +35,7 @@ private:
 private: // singleton
     SystemSettingAdapter();
 };
+
+}
 
 #endif //SETTINGADAPTER_H

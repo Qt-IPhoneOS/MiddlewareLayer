@@ -4,6 +4,8 @@
 #include <string>
 #include <CommonType.h>
 
+namespace midlayer {
+
 class WifiDevice {
 public:
     enum class DeviceProperty {
@@ -67,5 +69,7 @@ private:
     DeviceType mType {DeviceType::Unknown};
 
 };
+
+}
 
 #endif // WIFIDEVICE_H

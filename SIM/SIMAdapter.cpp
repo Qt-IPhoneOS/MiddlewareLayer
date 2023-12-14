@@ -1,6 +1,8 @@
 #include "SIMAdapter.h"
 #include "SIMConnect.cpp"
 
+using namespace midlayer;
+
 SIMAdapter::SIMAdapter()
     : mConnect(new SIMConnect(*this))
 {

@@ -3,6 +3,8 @@
 #include <PhoneBook/PhoneBookAdapter.h>
 #include <QDebug>
 
+namespace midlayer {
+
 class PhoneBookAdapterConnect {
 public:
     PhoneBookAdapterConnect(PhoneBookAdapter& instance);
@@ -99,4 +101,6 @@ void PhoneBookAdapterConnect::onQueryHistory(const std::list<service::PhoneHisto
     {
         mAdaper.onHistoryListChanged(histories);
     }
+}
+
 }

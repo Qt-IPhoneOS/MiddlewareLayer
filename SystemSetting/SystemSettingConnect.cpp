@@ -2,6 +2,8 @@
 #include <SystemSetting/SystemSettingEvent.h>
 #include <SystemSetting/SystemSettingAdapter.h>
 
+namespace midlayer {
+
 class SystemSettingConnect {
 public:
     SystemSettingConnect(SystemSettingAdapter& instance);
@@ -33,4 +35,6 @@ void SystemSettingConnect::updateHandleDataAirplaneMode(const service::AirplaneM
     } else {
         mSysAdap.notifyUpdateAirplaneMode(SystemSettingAdapter::AirplaneModeEnums::Inactive);
     }
+}
+
 }

@@ -1,6 +1,8 @@
 #include "PhoneBookAdapter.h"
 #include "PhoneBookAdapterConnect.cpp"
 
+using namespace midlayer;
+
 PhoneBookAdapter::PhoneBookAdapter()
     : mConnect(new PhoneBookAdapterConnect(*this))
 {

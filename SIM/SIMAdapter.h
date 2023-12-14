@@ -5,6 +5,8 @@
 #include <Feature/Signal.h>
 #include <shared_mutex>
 
+namespace midlayer {
+
 class SIMConnect;
 class SIMAdapter final : public AbstractInterface {
     friend class SIMConnect;
@@ -21,5 +23,7 @@ private:
 private: // singleton
     SIMAdapter();
 };
+
+}
 
 #endif // SIMADAPTER_H

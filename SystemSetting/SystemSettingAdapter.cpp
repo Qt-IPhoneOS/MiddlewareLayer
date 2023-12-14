@@ -1,6 +1,8 @@
 #include "SystemSettingAdapter.h"
 #include "SystemSettingConnect.cpp"
 
+using namespace midlayer;
+
 SystemSettingAdapter::SystemSettingAdapter()
     : mSysConnect(new SystemSettingConnect(*this))
 {

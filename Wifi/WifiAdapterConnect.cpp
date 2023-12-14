@@ -3,6 +3,8 @@
 #include <Wifi/WifiServiceProxy.h>
 #include <QDebug>
 
+namespace midlayer {
+
 class WifiAdapterConnect {
     friend class WifiAdapter;
 public:
@@ -258,4 +260,6 @@ void WifiAdapterConnect::addDiscoveryDevice(const service::WifiDiscoveryDeviceIn
     mAdapter.mDeviceTable.emplace(device.mAddress, newDev);
 
     mAdapter.onAddDiscoveryDevice(newDev);
+}
+
 }

@@ -6,6 +6,8 @@
 #include <shared_mutex>
 #include <list>
 
+namespace midlayer {
+
 struct ContactInfo {
     uint32_t id;
     std::string firstName;
@@ -43,5 +45,7 @@ private:
 private: // singleton
     PhoneBookAdapter();
 };
+
+}
 
 #endif // PHONEBOOKADAPTER_H
