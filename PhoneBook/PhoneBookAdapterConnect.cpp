@@ -8,21 +8,21 @@ public:
     PhoneBookAdapterConnect(PhoneBookAdapter& instance);
     ~PhoneBookAdapterConnect();
 
-    PhoneBookServiceProxy* mProxy {nullptr};
-    PhoneBookServiceEvent* mEvent {nullptr};
+    service::PhoneBookServiceProxy* mProxy {nullptr};
+    service::PhoneBookServiceEvent* mEvent {nullptr};
     PhoneBookAdapter& mAdaper;
 
     void onServiceConnected();
     void onServiceDisconnected();
 
-    void onQueryContact(const std::list<PhoneContactInfo>& list);
-    void onQueryHistory(const std::list<PhoneHistoryInfo>& list);
+    void onQueryContact(const std::list<service::PhoneContactInfo>& list);
+    void onQueryHistory(const std::list<service::PhoneHistoryInfo>& list);
 };
 
 
 PhoneBookAdapterConnect::PhoneBookAdapterConnect(PhoneBookAdapter& instance)
-    : mProxy(PhoneBookServiceProxy::instance())
-    , mEvent(PhoneBookServiceEvent::instance())
+    : mProxy(service::PhoneBookServiceProxy::instance())
+    , mEvent(service::PhoneBookServiceEvent::instance())
     , mAdaper(instance)
 {
     if (mProxy == nullptr)
@@ -44,8 +44,8 @@ void PhoneBookAdapterConnect::onServiceConnected()
     if (mProxy == nullptr)
         return;
 
-    mProxy->queryPhoneBook(PhoneBookDataType::Contact);
-    mProxy->queryPhoneBook(PhoneBookDataType::History);
+    mProxy->queryPhoneBook(service::PhoneBookDataType::Contact);
+    mProxy->queryPhoneBook(service::PhoneBookDataType::History);
 }
 
 void PhoneBookAdapterConnect::onServiceDisconnected()
@@ -57,7 +57,7 @@ void PhoneBookAdapterConnect::onServiceDisconnected()
 
 }
 
-void PhoneBookAdapterConnect::onQueryContact(const std::list<PhoneContactInfo> &list)
+void PhoneBookAdapterConnect::onQueryContact(const std::list<service::PhoneContactInfo> &list)
 {
     std::list<ContactInfo> contacts;
     for (auto item = list.begin(); item != list.end(); ++item)
@@ -80,7 +80,7 @@ void PhoneBookAdapterConnect::onQueryContact(const std::list<PhoneContactInfo> &
     }
 }
 
-void PhoneBookAdapterConnect::onQueryHistory(const std::list<PhoneHistoryInfo> &list)
+void PhoneBookAdapterConnect::onQueryHistory(const std::list<service::PhoneHistoryInfo> &list)
 {
     std::list<HistoryInfo> histories;
     for (auto item = list.begin(); item != list.end(); ++item)

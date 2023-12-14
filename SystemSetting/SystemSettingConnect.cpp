@@ -7,17 +7,17 @@ public:
     SystemSettingConnect(SystemSettingAdapter& instance);
     ~SystemSettingConnect();
 
-    void updateHandleDataAirplaneMode(const AirplaneModeTypes&);
+    void updateHandleDataAirplaneMode(const service::AirplaneModeTypes&);
 
-    SystemSettingProxy& mSysProxy;
-    SystemSettingEvent& mSysEvent;
+    service::SystemSettingProxy& mSysProxy;
+    service::SystemSettingEvent& mSysEvent;
     SystemSettingAdapter& mSysAdap;
 };
 
 
 SystemSettingConnect::SystemSettingConnect(SystemSettingAdapter& instance)
-    : mSysProxy(SystemSettingProxy::instance())
-    , mSysEvent(SystemSettingEvent::instance())
+    : mSysProxy(service::SystemSettingProxy::instance())
+    , mSysEvent(service::SystemSettingEvent::instance())
     , mSysAdap(instance)
 {
     mSysEvent.notifyUpdateAirplaneMode.reqCallbackFunc(std::bind(&SystemSettingConnect::updateHandleDataAirplaneMode, this, std::placeholders::_1));
@@ -27,8 +27,8 @@ SystemSettingConnect::~SystemSettingConnect() {
 
 }
 
-void SystemSettingConnect::updateHandleDataAirplaneMode(const AirplaneModeTypes& airplaneMode) {
-    if (airplaneMode == AirplaneModeTypes::Active) {
+void SystemSettingConnect::updateHandleDataAirplaneMode(const service::AirplaneModeTypes& airplaneMode) {
+    if (airplaneMode == service::AirplaneModeTypes::Active) {
         mSysAdap.notifyUpdateAirplaneMode(SystemSettingAdapter::AirplaneModeEnums::Active);
     } else {
         mSysAdap.notifyUpdateAirplaneMode(SystemSettingAdapter::AirplaneModeEnums::Inactive);

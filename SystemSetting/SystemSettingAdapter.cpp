@@ -29,6 +29,6 @@ SystemSettingAdapter::AirplaneModeEnums SystemSettingAdapter::getAirplaneMode() 
 }
 
 void SystemSettingAdapter::setNewAirplaneMode(const AirplaneModeEnums& newAirplaneMode) {
-    mSysConnect->mSysProxy.setAirplaneMode(static_cast<AirplaneModeTypes>(newAirplaneMode));
+    mSysConnect->mSysProxy.setAirplaneMode(static_cast<service::AirplaneModeTypes>(newAirplaneMode));
 }
 
