@@ -45,12 +45,12 @@ public:
     // Method
     WifiDevice* getDevice(const std::string& address);
 
-    signal::Signal<void(const bool&)> onWifiEnableChanged;
-    signal::Signal<void(const std::string&, const State&, const State&)> onDeviceStateChanged;
-    signal::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceListChanged;
-    signal::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
-    signal::Signal<void(WifiDevice*)> onAddDiscoveryDevice;
-    signal::Signal<void(const std::string&)> onRemoveDiscoveryDevice;
+    uicommon::Signal<void(const bool&)> onWifiEnableChanged;
+    uicommon::Signal<void(const std::string&, const State&, const State&)> onDeviceStateChanged;
+    uicommon::Signal<void(std::vector<WifiDevice*>)> onPairedDeviceListChanged;
+    uicommon::Signal<void(WifiDevice*)> onConnectedDeviceChanged;
+    uicommon::Signal<void(WifiDevice*)> onAddDiscoveryDevice;
+    uicommon::Signal<void(const std::string&)> onRemoveDiscoveryDevice;
 
 protected:
     WifiAdapter();

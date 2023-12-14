@@ -34,8 +34,8 @@ public:
     bool doConnect() override;
     bool doDisconnect() override;
 
-    signal::Signal<void(const std::list<ContactInfo>&)> onContactListChanged;
-    signal::Signal<void(const std::list<HistoryInfo>&)> onHistoryListChanged;
+    uicommon::Signal<void(const std::list<ContactInfo>&)> onContactListChanged;
+    uicommon::Signal<void(const std::list<HistoryInfo>&)> onHistoryListChanged;
 
 private:
     PhoneBookAdapterConnect* mConnect;

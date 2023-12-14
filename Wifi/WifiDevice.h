@@ -51,7 +51,7 @@ public:
     WifiDevice(std::string name, std::string address, bool privateAddr, std::string password, bool autoConnect);
     ~WifiDevice();
 
-    void setValue(const DeviceProperty&, const CommonType&);
+    void setValue(const DeviceProperty&, const uicommon::CommonType&);
 
     inline DeviceInfo getDeviceInfo() const { return mDeviceInfo; }
     inline std::string getPassword() const { return mPassword; }

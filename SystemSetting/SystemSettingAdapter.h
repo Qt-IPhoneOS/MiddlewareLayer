@@ -24,7 +24,7 @@ public:
     AirplaneModeEnums getAirplaneMode() const;
     void setNewAirplaneMode(const AirplaneModeEnums&);
 
-    signal::Signal<void(const AirplaneModeEnums&)> notifyUpdateAirplaneMode;
+    uicommon::Signal<void(const AirplaneModeEnums&)> notifyUpdateAirplaneMode;
 
 private:
     SystemSettingConnect* mSysConnect;
