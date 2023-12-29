@@ -4,6 +4,8 @@
 #include <Common/AbstractInterface.h>
 #include <Feature/Signal.h>
 #include <shared_mutex>
+#include "Common/Enums.h"
+#include <QVariant>
 
 namespace midlayer {
 
@@ -26,11 +28,22 @@ public:
     AirplaneModeEnums getAirplaneMode() const;
     void setNewAirplaneMode(const AirplaneModeEnums&);
 
+    bool getIsPersonalHotspot() const;
+    void setIsPersonalHotspot(const bool);
+
+    bool getIsAllowJoinNetwork() const;
+    void setNewIsAllowJoinNetwork(const bool);
+
+    bool getIsPersonalHotspotActive() const;
+    void setIsPersonalHotspotActive(const bool);
+
     uicommon::Signal<void(const AirplaneModeEnums&)> notifyUpdateAirplaneMode;
+    uicommon::Signal<void(const ID_STATE_CALLBACK, const QVariant)> notifyUpdateInfoSystemSetting;
 
 private:
     SystemSettingConnect* mSysConnect;
     AirplaneModeEnums mAirplaneMode = AirplaneModeEnums::Inactive;
+    bool mIsPersonalHotspotActive {false};
 
 private: // singleton
     SystemSettingAdapter();

@@ -34,3 +34,33 @@ void SystemSettingAdapter::setNewAirplaneMode(const AirplaneModeEnums& newAirpla
     mSysConnect->mSysProxy.setAirplaneMode(static_cast<service::AirplaneModeTypes>(newAirplaneMode));
 }
 
+bool SystemSettingAdapter::getIsPersonalHotspot() const
+{
+
+}
+
+void SystemSettingAdapter::setIsPersonalHotspot(const bool newStatus)
+{
+    mSysConnect->mSysProxy.setIsPersonalHotspotActive(newStatus);
+}
+
+bool SystemSettingAdapter::getIsAllowJoinNetwork() const
+{
+
+}
+
+void SystemSettingAdapter::setNewIsAllowJoinNetwork(const bool newStatus)
+{
+
+}
+
+bool SystemSettingAdapter::getIsPersonalHotspotActive() const
+{
+
+}
+
+void SystemSettingAdapter::setIsPersonalHotspotActive(const bool newStatus)
+{
+    mSysConnect->mSysProxy.setIsPersonalHotspotActive(newStatus);
+}
+

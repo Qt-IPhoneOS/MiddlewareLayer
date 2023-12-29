@@ -10,6 +10,7 @@ public:
     ~SystemSettingConnect();
 
     void updateHandleDataAirplaneMode(const service::AirplaneModeTypes&);
+    void updatePersonalHotspot(const service::PersonalHotspotTypes&);
 
     service::SystemSettingProxy& mSysProxy;
     service::SystemSettingEvent& mSysEvent;
@@ -23,6 +24,7 @@ SystemSettingConnect::SystemSettingConnect(SystemSettingAdapter& instance)
     , mSysAdap(instance)
 {
     mSysEvent.notifyUpdateAirplaneMode.reqCallbackFunc(std::bind(&SystemSettingConnect::updateHandleDataAirplaneMode, this, std::placeholders::_1));
+    mSysEvent.notifyPersonalHotspot.reqCallbackFunc(std::bind(&SystemSettingConnect::updatePersonalHotspot, this, std::placeholders::_1));
 }
 
 SystemSettingConnect::~SystemSettingConnect() {
@@ -35,6 +37,11 @@ void SystemSettingConnect::updateHandleDataAirplaneMode(const service::AirplaneM
     } else {
         mSysAdap.notifyUpdateAirplaneMode(SystemSettingAdapter::AirplaneModeEnums::Inactive);
     }
+}
+
+void SystemSettingConnect::updatePersonalHotspot(const service::PersonalHotspotTypes &personalHospot) {
+    if (personalHospot == service::PersonalHotspotTypes::Active) mSysAdap.notifyUpdateInfoSystemSetting(ID_STATE_CALLBACK::PersonalHotspot, QVariant(1));
+    else mSysAdap.notifyUpdateInfoSystemSetting(ID_STATE_CALLBACK::PersonalHotspot, QVariant(0));
 }
 
 }
