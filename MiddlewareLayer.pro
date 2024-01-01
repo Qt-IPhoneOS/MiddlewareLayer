@@ -34,6 +34,7 @@ HEADERS += \
     Common/AbstractInterface.h \
     PhoneBook/PhoneBookAdapter.h \
     SIM/SIMAdapter.h \
+    SystemSetting/CommonEnums/Enums.h \
     Wifi/WifiAdapter.h \
     Wifi/WifiDevice.h \ 
     SystemSetting/SystemSettingAdapter.h
