@@ -34,3 +34,15 @@ bool SIMAdapter::doDisconnect() {
     return true;
 }
 
+
+void SIMAdapter::setIsAllowOthersToJoin(const bool &status) {
+    mConnect->mProxy->setAllowOthersToJoinNetwork(static_cast<service::AllowOthersToJoinTypes>(status));
+}
+
+void SIMAdapter::setIsMaximizeCompatibility(const bool &status) {
+    mConnect->mProxy->setMaximizeCompatibility(static_cast<service::MaximizeCompatibilityTypes>(status));
+}
+
+void SIMAdapter::setIsCellularDataStatus(const bool& status) {
+    mConnect->mProxy->setCellularStatus(static_cast<service::CellularStatusTypes>(status));
+}

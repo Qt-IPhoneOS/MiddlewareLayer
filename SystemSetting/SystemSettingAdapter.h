@@ -16,10 +16,6 @@ public:
 
     enum class ID_CALLBACK {
         Airplane_Mode,
-        Cellular_Network,
-        Allow_Others_To_Join,
-        Personal_Hotspot,
-        Maximize_Compaxibility,
         None
     };
 
@@ -39,10 +35,6 @@ public:
 public:
     AirplaneModeEnums getAirplaneMode() const;
     void setNewAirplaneMode(const AirplaneModeEnums&);
-
-    void setIsAllowOthersToJoin(const bool & status);
-    void setIsMaximizeCompatibility(const bool& status);
-    void setIsCellularStatus(const bool& status);
 
     uicommon::Signal<void(ID_CALLBACK, const int&)> notifyUpdateDataSystemSeting;
 

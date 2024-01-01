@@ -34,13 +34,5 @@ void SystemSettingAdapter::setNewAirplaneMode(const AirplaneModeEnums& newAirpla
     mSysConnect->mSysProxy.setAirplaneMode(static_cast<service::AirplaneModeTypes>(newAirplaneMode));
 }
 
-void SystemSettingAdapter::setIsAllowOthersToJoin(const bool &status)
-{
-    mSysConnect->mSysProxy.setAllowOthersToJoinNetwork(static_cast<service::AllowOthersToJoinTypes>(status));
-}
 
-void SystemSettingAdapter::setIsMaximizeCompatibility(const bool &status)
-{
-    mSysConnect->mSysProxy.setMaximizeCompatibility(static_cast<service::MaximizeCompatibilityTypes>(status));
-}
 
