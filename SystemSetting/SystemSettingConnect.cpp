@@ -11,6 +11,7 @@ public:
 
     void updateHandleDataAirplaneMode(const service::AirplaneModeTypes&);
 
+
     service::SystemSettingProxy& mSysProxy;
     service::SystemSettingEvent& mSysEvent;
     SystemSettingAdapter& mSysAdap;
@@ -31,9 +32,9 @@ SystemSettingConnect::~SystemSettingConnect() {
 
 void SystemSettingConnect::updateHandleDataAirplaneMode(const service::AirplaneModeTypes& airplaneMode) {
     if (airplaneMode == service::AirplaneModeTypes::Active) {
-        mSysAdap.notifyUpdateAirplaneMode(SystemSettingAdapter::AirplaneModeEnums::Active);
+        mSysAdap.notifyUpdateDataSystemSeting(SystemSettingAdapter::ID_CALLBACK::Airplane_Mode, 1);
     } else {
-        mSysAdap.notifyUpdateAirplaneMode(SystemSettingAdapter::AirplaneModeEnums::Inactive);
+        mSysAdap.notifyUpdateDataSystemSeting(SystemSettingAdapter::ID_CALLBACK::Airplane_Mode, 0);
     }
 }
 
