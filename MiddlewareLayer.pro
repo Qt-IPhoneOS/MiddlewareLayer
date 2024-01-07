@@ -5,8 +5,8 @@ TEMPLATE = lib
 CONFIG += c++20 dl
 
 TARGET = middlewarelayer
-DESTDIR = $$PWD/../../executable
-LIBS += -L$$PWD/../../executable -luicommon -lservice
+DESTDIR = $$PWD/../../build/executable
+LIBS += -L$$PWD/../../build/executable -luicommon -lservice
 
 INCLUDEPATH += $$PWD/../UICommon \
                $$PWD/../UICommon/Feature \
